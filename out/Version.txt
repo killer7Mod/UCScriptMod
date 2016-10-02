@@ -1,0 +1,23 @@
+Version: 0.00053
+
+Changes:
+*Generator Play Store
+*Direct Download of Google Drive
+*Generator Mega
+*View Source Page
+*JavaScript Injector
+*Generator 4Shared
+*Generator userscloud
+*Generator dailyuploads
+|
+Versão: 0.00053
+
+Mudanças:
+*Gerador de Download da Play Store
+*Gerador de Link direto para o Google Drive
+*Gerador do de Download do Mega(Mega.co.nz,Mega.nz)
+*Ver Código fonte da página
+*JavaScript Injetor
+*Gerador do 4Shared
+*Gerador do Userscloud
+*Gerador do dailyuploads
