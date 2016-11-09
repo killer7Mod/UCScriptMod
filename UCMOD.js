@@ -4,7 +4,9 @@
  */
 var mActivity = getMainContext();
 var FDIR = mActivity.getFilesDir();
- eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/Lang.js")));eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/Views.js")));eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/JSUtils.js")));
+ // Test for scripts
+ 
+eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/Lang.js")));eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/Views.js")));eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/JSUtils.js")));
 var update;
 var version = "0.0.8";
 var menu_di;
@@ -184,8 +186,8 @@ function hook_menu_draw(id, al)
 switch (id)
 {
 case 0xfe04:
-	//al.add(getDraw("/sdcard/javascript/jsmod.png"));
-	al.add(getDraw(FDIR.getAbsolutePath()+"/script/jsmod.png"));
+	al.add(getDraw("/sdcard/javascript2/jsmod.png"));
+	//al.add(getDraw(FDIR.getAbsolutePath()+"/script/jsmod.png"));
 	break;
 }
 }
@@ -235,7 +237,7 @@ GUIOptions = [
 function showJSMOD()
 {
 loadOptions();
-//if(!GUIOptions)
+if(!GUIOptions)
 newGUIOptions();
 mActivity.runOnUiThread(
 	function()
@@ -253,7 +255,7 @@ mActivity.runOnUiThread(
 
 	var spinner = new android.widget.Spinner(mActivity);
 	var lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-	lp.setMargins(0, 0, 0, Utils.dp2px(mActivity, 3));
+	lp.setMargins(0, 0, 0, dpToPx(3));
 	spinner.setLayoutParams(lp);
 	var adapter = new android.widget.ArrayAdapter(mActivity, 17367050, JsArrayToJavaArray(java.lang.String, names));
 	spinner.setAdapter(adapter);
@@ -314,7 +316,7 @@ mActivity.runOnUiThread(
 	var t = new android.widget.TextView(mActivity);
 	t.setText(getLangString("NAME") + ": " + tempJSN.get(position));
 	var et = new android.widget.EditText(mActivity);
-	et.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, Utils.dp2px(mActivity, 200)));
+	et.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, dpToPx(200)));
 	et.setGravity(android.view.Gravity.TOP);
 	et.setText(tempJS.get(position));
 	//et.addTextChangedListener(textwatcher);
@@ -368,7 +370,7 @@ function setViews(layout, position)
 {
 layout.removeAllViews();
 if (position == 0)
-	scroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, Utils.dp2px(mActivity, 150)));
+	scroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, dpToPx(150)));
 else scroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));	
 var ops = GUIOptions[position].options;
 for (var i=0;i < ops.length;i++)

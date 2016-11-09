@@ -11,7 +11,7 @@ function getGenerators(){
 	var names = getLangString("JSMOD");
 	var arr = [];
 	var params = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
-	var margin = Utils.dp2px(mActivity,10);
+	var margin = dpToPx(10);
 	params.setMargins(0,margin,0,margin);
 	for(var i=0;i < names.length;i++){
 		var cbox = new android.widget.CheckBox(mActivity);
@@ -49,8 +49,8 @@ function getJavascript(){
 	var arr = [];
 	var t1 = new android.widget.ListView(mActivity);
 	t1.setScrollbarFadingEnabled(false);
-	var lp = new LayoutParams(LayoutParams.MATCH_PARENT,Utils.dp2px(mActivity,200));
-	lp.setMargins(0,Utils.dp2px(mActivity,10),0,0);
+	var lp = new LayoutParams(LayoutParams.MATCH_PARENT,dpToPx(200));
+	lp.setMargins(0,dpToPx(10),0,0);
 	t1.setLayoutParams(lp);
 	t1.setOnItemLongClickListener(function(parent,view,position,id){
 	tempJS.remove(position);
@@ -74,7 +74,7 @@ function getJavascript(){
 function newJavascript(){
 	layoutOptions.removeAllViews();
 	var params = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
-	var margin = Utils.dp2px(mActivity,10);
+	var margin = dpToPx(10);
 	params.setMargins(0,margin,0,0);
 	var t1 = new android.widget.TextView(mActivity);
 	t1.setText(getLangString("NAME"));
@@ -83,7 +83,7 @@ function newJavascript(){
 	var t2 = new android.widget.TextView(mActivity);
 	t2.setText(getLangString("CODE"));
 	var et2 = new com.uc.browser.UCEditText(mActivity);
-	et2.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,Utils.dp2px(mActivity,150)));
+	et2.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,dpToPx(150)));
 	et2.setGravity(android.view.Gravity.TOP);
 	//et2.addTextChangedListener(textwatcher);
 	var btn = new com.uc.browser.UCButton(mActivity);
