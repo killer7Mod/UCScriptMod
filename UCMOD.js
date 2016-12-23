@@ -25,7 +25,7 @@ var GUIOptions;
 var Class = Packages.java.lang.Class;
 var URLControl = Packages.com.wmods.modding.URLControl;
 var Utils = Packages.com.wmods.modding.Utils;
-var Lang = Packages.com.wmods.inimod.Lang;
+var LangUtils = Packages.com.wmods.utils.LangUtils;
 var LayoutParams = Packages.android.widget.LinearLayout.LayoutParams;
 var TextUtils = Packages.android.text.TextUtils;
 
@@ -60,12 +60,15 @@ return directGoogle(url);
 }
 if ((host.contains("play.google.com") && mOptions[0][0])
     || ((host.contains("mega.co.nz") || host.contains("mega.nz")) && mOptions[0][2])
-	|| (host.contains("4shared.com") && mOptions[0][3])
 	|| (host.contains("userscloud.com") && mOptions[0][4])
 	|| ((host.equals("dailyuploads.net") || host.equals("www.dailyuploads.net")) && mOptions[0][5]))
 {
 generator(url);
 return true;
+}
+
+if (host.contains("4shared.com") && mOptions[0][3]){
+	generator4shared(url.replace("www.4shared.com","www.goowap.com"));	
 }
 
 if (host.contains("upload.mobi") && mUrl.getPath() ? !mUrl.getPath().contains("download") : false)
@@ -102,11 +105,15 @@ function hook_updated()
 {
 loadLang();
 loadOptions();
-var m = com.uc.browser.o.f();
+var m = com.uc.browser.p.f();
 var f = m.getClass().getDeclaredField("y");
 f.setAccessible(true);
-f.set(m, new com.uc.browser.cw(mActivity));
+/*
+if(f.get(m) != null){
+f.set(m, new com.uc.browser.cm(mActivity));
+}
 showUpdate();
+*/
 }
 
 // Select File Browser
@@ -122,6 +129,11 @@ function hook_page(o)
 {
 if (!mOptions)loadOptions();
 addNewButton();
+/*
+var v = mActivity.getWindow().getDecorView();
+v.setBackgroundColor(android.graphics.Color.rgb(0,0,255));
+v.getLayoutParams().alpha=1;
+*/
 }
 
 // Options on Long Click(Listener)
@@ -133,6 +145,13 @@ if (id == 0xf001)
 	openURL("ext:es:javascript:location.href=\"View-Source:\".concat(location.href)");
 else if (id == 0xf002)
 	showJSInjector();
+else if (id == 0xf003){
+	var intent = new android.content.Intent("android.intent.action.VIEW");
+	var url = o.Y().ag();
+	if(url == null)url = o.S;
+	intent.setData(android.net.Uri.parse(url));
+	mActivity.startActivity(android.content.Intent.createChooser(intent,"URL"));
+ }
 }
 
 // Buttons on select text
@@ -159,9 +178,11 @@ function hook_select_button_listener(o, id)
 // Parameter @{ArrayList=al} = "Add Class com.uc.browser.di<init>(III)V {id,name_id,drawable_id}"
 function hook_menu_new(cw, al)
 {
-menu_di = new_di(0xff04, 0xff03, 0xfe04);
+menu_di = new_menu(0xff04, 0xff03, 0xfe04);
 menu_di.d(isUpdated());
 al.add(menu_di);
+al.add(new_menu(0xff05, 0xff04, 0xfe04));
+
 }
 
 
@@ -174,6 +195,9 @@ switch (id)
 {
 case 0xff03:
 	al.add("JS MOD");
+	break;
+case 0xff04:
+	al.add("TESTE");
 	break;
 }
 }
@@ -202,6 +226,10 @@ case 0xff04:
 	showJSMOD();
 	if (isUpdated())
 		setMenuUpdated(false);
+	break;
+case 0xff05:
+	var mP = getClasse("com.uc.browser.p").getMethod("f").invoke(null);
+	mP.onDownloadStart("http://wapbrasil.net/","","","video",-1);
 	break;
 }
 }
@@ -242,7 +270,7 @@ newGUIOptions();
 mActivity.runOnUiThread(
 	function()
 	{
-	var clazz = getClasse("abg");
+	var clazz = getClasse("agd");
 	GUIPainel = clazz.getConstructor(android.content.Context).newInstance(mActivity);
 	GUIPainel.setTitle("JSMOD");
 	var layout = new android.widget.LinearLayout(mActivity);
@@ -288,12 +316,12 @@ mActivity.runOnUiThread(
 		loadOptions();
 		});
 
-	GUIPainel.b(Lang.getString("SAVE"), function(dialog)
+	GUIPainel.b(LangUtils.getString("SAVE"), function(dialog)
 				{
 				dialog.dismiss();
 				saveOptions();
 				});
-	GUIPainel.a(Lang.getString("CANCEL"), function(dialog){
+	GUIPainel.a(LangUtils.getString("CANCEL"), function(dialog){
 		dialog.dismiss();
 		loadOptions();
 	});
@@ -470,7 +498,7 @@ function setMenuUpdated(bool)
 {
 if (menu_di != null)
 {
-var m = com.uc.browser.o.f();
+var m = com.uc.browser.p.f();
 var f = m.getClass().getDeclaredField("y");
 f.setAccessible(true);
 var mCw = f.get(m);
@@ -508,7 +536,7 @@ function showUpdate()
 mActivity.runOnUiThread(
 	function()
 	{
-	var clazz = getClasse("abg");
+	var clazz = getClasse("agd");
 	var painel = clazz.getConstructor(android.content.Context).newInstance(mActivity);
 	painel.setTitle(getLangString("JSUP"));
 	var content = Utils.readFile(FDIR.getAbsolutePath() + "/script/UCMOD.txt");
@@ -528,16 +556,43 @@ mActivity.runOnUiThread(
 
 function addNewButton()
 {
-var clazz = getClasse("yl");
-var f = clazz.getField("g");
-var bjava = f.get(null);
-if (bjava.length == 9)return;
-var bjs= JavaArrayToJsArray(bjava);
-bjs[7] = new_ym(0xf001, getLangString("VS"));
-bjs[8] = new_ym(0xf002, "Javascript Injector");
-bjava = JsArrayToJavaArray(getClasse("ym"), bjs);
-f.set(null, bjava);
+var f,jarray,array;
+	
+var clazz = getClasse("adi");
+f = clazz.getField("g");
+jarray = f.get(null);
+if (!checkYlId(jarray,0xf001)){
+array = JavaArrayToJsArray(jarray);
+array.push(new_option_button(0xf001, getLangString("VS")));
+array.push(new_option_button(0xf002, "Javascript Injector"));
+jarray = JsArrayToJavaArray(getClasse("adj"), array);
+f.set(null, jarray);
 }
+f = clazz.getField("f");
+jarray = f.get(null);
+if (!checkYlId(jarray,0xf003)){
+array = JavaArrayToJsArray(jarray);
+array.push(new_option_button(0xf003,"Abrir Como"));
+jarray = JsArrayToJavaArray(getClasse("adj"),array);
+f.set(null,jarray);
+}
+f = clazz.getField("e");
+jarray = f.get(null);
+if (!checkYlId(jarray,0xf003)){
+array = JavaArrayToJsArray(jarray);
+array.push(new_option_button(0xf003,"Abrir Como"));
+jarray = JsArrayToJavaArray(getClasse("adj"),array);
+f.set(null,jarray);
+ }
+}
+
+function checkYlId(array,id){
+	for(var i = 0;i < array.length;i++)
+	if (array[i].b == id)
+		return true;
+	return false;
+}
+
 
 /*
 
@@ -657,6 +712,28 @@ new java.lang.Thread(
 		}
 	}).start();
 }
+
+function generator4shared(url)
+{
+print(getLangString("GL"));
+new java.lang.Thread(
+	{
+		run:function()
+		{
+		var content = getStringURL(url);
+		try
+		{
+		var m = content.match("data: \"(root=(.*?)\")");
+		var content = Utils.getStringURL("http://www.goowap.com/root.html",new java.lang.String(m[1]).getBytes());
+		print(content);
+		}catch(e){
+		print(e);
+		}
+		print(m[1]);
+		}
+	}).start();
+}
+
 
 function generatorUpload(url)
 {

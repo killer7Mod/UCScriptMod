@@ -105,7 +105,7 @@ function newJavascript(){
 	});
 	btn.setText(getLangString("ADD"));
 	var btn2 = new com.uc.browser.UCButton(mActivity);
-	btn2.setText(Lang.getString("CANCEL"));
+	btn2.setText(LangUtils.getString("CANCEL"));
 	btn2.setLayoutParams(params);
 	btn2.setOnClickListener(function(view){
 	setViews(layoutOptions,mPos);

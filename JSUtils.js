@@ -27,8 +27,8 @@ function getDraw(name) {
 	}
 }
 
-function new_di(a, b, c) {
-	return com.uc.browser.di(new java.lang.Integer(a), new java.lang.Integer(b), new java.lang.Integer(c));
+function new_menu(a, b, c) {
+	return com.uc.browser.cy(new java.lang.Integer(a), new java.lang.Integer(b), new java.lang.Integer(c));
 }
 
 function new_acn(val, str) {
@@ -36,8 +36,8 @@ function new_acn(val, str) {
 	return acn_cons.newInstance(new java.lang.Integer(val), str);
 }
 
-function new_ym(id, name) {
-	return getClasse("ym").getConstructor(java.lang.Integer.TYPE, java.lang.String).newInstance(new java.lang.Integer(id), name);
+function new_option_button(id, name) {
+	return getClasse("adj").getConstructor(java.lang.Integer.TYPE, java.lang.String).newInstance(new java.lang.Integer(id), name);
 }
 
 function getClasse(name) {

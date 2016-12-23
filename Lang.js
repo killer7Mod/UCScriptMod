@@ -2,7 +2,7 @@ var mLang;
 
 function loadLang(){
 	mLang = {};
-	var l =com.wmods.inimod.Lang.getLang();
+	var l =com.wmods.utils.LangUtils.getLang();
 	if(l.equals("pt"))
 	mLang = {
 	LANG:"pt",
