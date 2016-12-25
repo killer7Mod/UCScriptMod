@@ -5,8 +5,9 @@
 var mActivity = getMainContext(0);
 var FDIR = mActivity.getFilesDir();
 // Test for scripts
-
-//eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/Lang.js")));eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/Views.js")));eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/JSUtils.js")));
+try{
+eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/Lang.js")));eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/Views.js")));eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/JSUtils.js")));
+}catch(e){}
 var update;
 var version = "0.0.8";
 var menu_di;
@@ -105,6 +106,7 @@ function hook_url(url) {
 function hook_updated() {
 	loadLang();
 	loadOptions();
+	/*
 	var m = com.uc.browser.p.f();
 	var f = m.getClass().getDeclaredField("y");
 	f.setAccessible(true);
@@ -113,6 +115,7 @@ function hook_updated() {
 		f.set(m, new com.uc.browser.cm(mActivity));
 	}
 	showUpdate();
+	*/
 }
 
 // Select File Browser
