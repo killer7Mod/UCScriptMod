@@ -2,7 +2,7 @@
  * obj.Z() // UcWebView
  * Z().q() // Url of page
  */
-var mActivity = getMainContext();
+var mActivity = getMainContext(0);
 var FDIR = mActivity.getFilesDir();
  // Test for scripts
  
@@ -43,7 +43,7 @@ var mUrl = new URLControl(url);
 var host;
 if ((host = mUrl.getHost()) == null)
 	return false;
-
+/*
 if (host.contains("sht.io"))
 {
 var s = url.match(/sht\.io\/(.+?)\/(.+)/);
@@ -53,6 +53,7 @@ print("Skip Sht.io");
 openURL(s[2]);
 return true;
 }
+*/
 
 if (host.contains("drive.google.com") && mOptions[0][1])
 {
@@ -121,6 +122,10 @@ showUpdate();
 function hook_select_file(filename)
 {
 
+}
+
+function hook_proxy(param){
+	return false;
 }
 
 // Show Page
