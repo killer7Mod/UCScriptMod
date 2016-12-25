@@ -1,4 +1,4 @@
-Version: 0.00055
+Version: 0.00056
 
 Changes:
 *Generator Play Store
@@ -10,7 +10,7 @@ Changes:
 *Generator userscloud
 *Generator dailyuploads
 |
-Versão: 0.00055
+Versão: 0.00056
 
 Mudanças:
 *Gerador de Download da Play Store
