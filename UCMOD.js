@@ -4,12 +4,19 @@
  */
 var mActivity = getMainContext(0);
 var FDIR = mActivity.getFilesDir();
+var DEBUG = new java.io.File("/sdcard/DEBUG").exists();
 // Test for scripts
-try{
-eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/Lang.js")));eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/Views.js")));eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/JSUtils.js")));
-}catch(e){}
+
+
+if (DEBUG)
+{
+	eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/Lang.js")));
+	eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/Views.js")));
+	eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/JSUtils.js")));
+}
+
 var update;
-var version = "0.0.8";
+var version = "0.0.9";
 var menu_di;
 var iniProp;
 var GUIPainel;
@@ -43,17 +50,16 @@ function hook_url(url) {
 	var host;
 	if ((host = mUrl.getHost()) == null)
 		return false;
-	/*
-	 if (host.contains("sht.io"))
-	 {
-	 var s = url.match(/sht\.io\/(.+?)\/(.+)/);
-	 if (!s || !isURL(s[2]))
-	 return false;
-	 print("Skip Sht.io");
-	 openURL(s[2]);
-	 return true;
-	 }
-	 */
+
+	if (DEBUG && host.contains("sht.io"))
+	{
+		var s = url.match(/sht\.io\/(.+?)\/(.+)/);
+		if (!s || !isURL(s[2]))
+			return false;
+		print("Skip sht.io");
+		openURL(s[2]);
+		return true;
+	}
 
 	if (host.contains("drive.google.com") && mOptions[0][1])
 	{
@@ -107,15 +113,15 @@ function hook_updated() {
 	loadLang();
 	loadOptions();
 	/*
-	var m = com.uc.browser.p.f();
-	var f = m.getClass().getDeclaredField("y");
-	f.setAccessible(true);
-	if (f.get(m) != null)
-	{
-		f.set(m, new com.uc.browser.cm(mActivity));
-	}
+	 var m = com.uc.browser.p.f();
+	 var f = m.getClass().getDeclaredField("y");
+	 f.setAccessible(true);
+	 if (f.get(m) != null)
+	 {
+	 f.set(m, new com.uc.browser.cm(mActivity));
+	 }
+	 */
 	showUpdate();
-	*/
 }
 
 // Select File Browser
@@ -196,9 +202,6 @@ function hook_menu_name(id, al) {
 		case 0xff03:
 			al.add("JS MOD");
 			break;
-		//case 0xff04:
-		//	al.add("TESTE");
-		//	break;
 	}
 }
 
@@ -209,8 +212,10 @@ function hook_menu_draw(id, al) {
 	switch (id)
 	{
 		case 0xfe04:
-			//al.add(getDraw("/sdcard/javascript2/jsmod.png"));
-			al.add(getDraw(FDIR.getAbsolutePath()+"/script/jsmod.png"));
+			if (DEBUG)
+				al.add(getDraw("/sdcard/javascript2/jsmod.png"));
+			else
+				al.add(getDraw(FDIR.getAbsolutePath() + "/script/jsmod.png"));
 			break;
 	}
 }
@@ -225,10 +230,6 @@ function hook_menu_check(id) {
 			if (isUpdated())
 				setMenuUpdated(false);
 			break;
-		//case 0xff05:
-		//	var mP = getClasse("com.uc.browser.p").getMethod("f").invoke(null);
-		//	mP.onDownloadStart("http://wapbrasil.net/", "", "", "video", -1);
-		//	break;
 	}
 }
 
@@ -340,7 +341,7 @@ function showEditor(position) {
 			layout.addView(et);
 			Painel.setView(layout);
 			Painel.setPositiveButton(
-				Lang.getString("SAVE"), 
+				LangUtils.getString("SAVE"), 
 				function(dialog, pos) {
 					var text = et.getText().toString();
 					if (text.trim().length() == 0)
@@ -351,7 +352,7 @@ function showEditor(position) {
 					tempJS.set(position, text);
 					dialog.dismiss();
 				});
-			Painel.setNeutralButton(Lang.getString("CANCEL"), null);
+			Painel.setNeutralButton(LangUtils.getString("CANCEL"), null);
 			Painel.show();
 		});
 }
@@ -359,7 +360,7 @@ function showEditor(position) {
 function showJSInjector() {
 	mActivity.runOnUiThread(
 		function() {
-			var clazz = getClasse("abg");
+			var clazz = getClasse("agd");
 			GUIPainel = clazz.getConstructor(android.content.Context).newInstance(mActivity);
 			GUIPainel.setTitle("JavaScript " + getLangString("CODE"));
 			if (mOptions[1][0].size() == 0)
@@ -435,7 +436,7 @@ function loadOptions() {
 	str2 = iniProp.getProperty("JSScriptV", null);
 	tempJSN = new java.util.ArrayList();
 	tempJS = new java.util.ArrayList();
-	if (str && str.length() > 0 && str2)
+	if (DEBUG && str != null && str.length() > 0 && str2 != null)
 	{
 		var split = str2.split("\\|\\|");
 		var split2 = str.split("\\|");
@@ -448,8 +449,13 @@ function loadOptions() {
 			if (!name)tempJSN.add(split2[i]);
 			else tempJSN.add(name);
 		}
-		mOptions[1] = [tempJSN,tempJS];
 	}
+	else
+	{
+		tempJSN.add("Proxy TurboHide");
+		tempJS.add(baseToString("ZG9jdW1lbnQud3JpdGUoJzxzY3JpcHQgc3JjPSJodHRwOi8vcGFzdGViaW4uY29tL3Jhdy9TdVNVMHhMdCIgPjwvc2NyaXB0PicpOw=="));
+	}
+	mOptions[1] = [tempJSN,tempJS];
 }
 
 function saveOptions() {

@@ -1,4 +1,4 @@
-Version: 0.00057
+Version: 0.00058
 
 Changes:
 *Generator Play Store
@@ -9,8 +9,9 @@ Changes:
 *Generator 4Shared
 *Generator userscloud
 *Generator dailyuploads
+*Javacript Proxy TurboHide
 |
-Versão: 0.00057
+Versão: 0.00058
 
 Mudanças:
 *Gerador de Download da Play Store
@@ -21,3 +22,4 @@ Mudanças:
 *Gerador do 4Shared
 *Gerador do Userscloud
 *Gerador do dailyuploads
+*Javacript Proxy TurboHide

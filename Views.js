@@ -59,15 +59,19 @@ function getJavascript(){
 	print(getLangString("LIST_R"));
 	return true;
 	});
+	if(DEBUG)
 	t1.setOnItemClickListener(function(parent,view,position,id){
 		showEditor(position);
 	});
+	if(DEBUG){
 	var btn = new com.uc.browser.UCButton(mActivity);
 	btn.setOnClickListener(function(view){
 	newJavascript();
 	});
 	btn.setText(getLangString("ADD"));
 	return [t1,btn];
+	}
+	return [t1];
 }
 
 
