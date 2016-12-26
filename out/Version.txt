@@ -1,4 +1,4 @@
-Version: 0.00058
+Version: 0.00059
 
 Changes:
 *Generator Play Store
@@ -11,7 +11,7 @@ Changes:
 *Generator dailyuploads
 *Javacript Proxy TurboHide
 |
-Versão: 0.00058
+Versão: 0.00059
 
 Mudanças:
 *Gerador de Download da Play Store
