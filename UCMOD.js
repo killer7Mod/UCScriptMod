@@ -79,7 +79,7 @@ function hook_url(url) {
 		generator4shared(url.replace("www.4shared.com", "www.goowap.com"));	
 	}
 
-	if (host.contains("upload.mobi") && mUrl.getPath() ? !mUrl.getPath().contains("download") : false)
+	if (DEBUG && host.contains("upload.mobi") && mUrl.getPath() ? !mUrl.getPath().contains("download") : false)
 	{
 		generatorUpload(url);
 		return true;
