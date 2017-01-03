@@ -1,7 +1,7 @@
-Version: 0.00059
+Version: 0.00060
 
 Changes:
-*Generator Play Store
+*Generator Play Store(Updated 03/01/2017)
 *Direct Download of Google Drive
 *Generator Mega
 *View Source Page
@@ -11,10 +11,10 @@ Changes:
 *Generator dailyuploads
 *Javacript Proxy TurboHide
 |
-Versão: 0.00059
+Versão: 0.00060
 
 Mudanças:
-*Gerador de Download da Play Store
+*Gerador de Download da Play Store(Atualizado 03/01/2017)
 *Gerador de Link direto para o Google Drive
 *Gerador do de Download do Mega(Mega.co.nz,Mega.nz)
 *Ver Código fonte da página
