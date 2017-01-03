@@ -65,12 +65,17 @@ function hook_url(url) {
 	{
 		return directGoogle(url);
 	}
-	if ((host.contains("play.google.com") && mOptions[0][0])
-		|| ((host.contains("mega.co.nz") || host.contains("mega.nz")) && mOptions[0][2])
+	if (((host.contains("mega.co.nz") || host.contains("mega.nz")) && mOptions[0][2])
 		|| (host.contains("userscloud.com") && mOptions[0][4])
 		|| ((host.equals("dailyuploads.net") || host.equals("www.dailyuploads.net")) && mOptions[0][5]))
 	{
 		generator(url);
+		return true;
+	}
+
+	if (host.contains("play.google.com") && mOptions[0][0])
+	{
+		generatorPlay(url);
 		return true;
 	}
 
@@ -139,11 +144,7 @@ function hook_proxy(param) {
 function hook_page(o) {
 	if (!mOptions)loadOptions();
 	addNewButton();
-	/*
-	 var v = mActivity.getWindow().getDecorView();
-	 v.setBackgroundColor(android.graphics.Color.rgb(0,0,255));
-	 v.getLayoutParams().alpha=1;
-	 */
+
 }
 
 // Options on Long Click(Listener)
@@ -188,7 +189,11 @@ function hook_menu_new(cw, al) {
 	menu_di = new_menu(0xff04, 0xff03, 0xfe04);
 	menu_di.d(isUpdated());
 	al.add(menu_di);
-	//al.add(new_menu(0xff05, 0xff04, 0xfe04));
+
+	if (DEBUG)
+	{
+		al.add(new_menu(0xfa01, 0xfa01, 0xfa01));
+	}
 
 }
 
@@ -202,6 +207,9 @@ function hook_menu_name(id, al) {
 		case 0xff03:
 			al.add("JS MOD");
 			break;
+		case 0xfa01:
+			al.add("TESTE");
+			break;
 	}
 }
 
@@ -212,11 +220,13 @@ function hook_menu_draw(id, al) {
 	switch (id)
 	{
 		case 0xfe04:
+		case 0xfa01:
 			if (DEBUG)
 				al.add(getDraw("/sdcard/javascript2/jsmod.png"));
 			else
 				al.add(getDraw(FDIR.getAbsolutePath() + "/script/jsmod.png"));
 			break;
+
 	}
 }
 
@@ -230,7 +240,19 @@ function hook_menu_check(id) {
 			if (isUpdated())
 				setMenuUpdated(false);
 			break;
+		case 0xfa01:
+			initSocket();
 	}
+}
+
+
+function initSocket() {
+	var ym = getClasse("yd").getField("i").get(null);
+	var F = getClasse("yl").getField("F").getInt(null);
+	var m =ym.getClass().getMethod("a", java.lang.Integer.TYPE, java.lang.Integer.TYPE, java.lang.Integer.TYPE, getClasse("java.lang.Object"));
+	var url = ["http://192.99.148.73:8080/live/ciganny/6462/53.m3u8","","","","","","","",""];
+	var array = JsArrayToJavaArray(getClasse("java.lang.String"), url);
+	m.invoke(ym, pInt(F), pInt(1), pInt(0), array);
 }
 
 // ModService
@@ -689,6 +711,16 @@ function generator(url) {
 				}
 			}
 		}).start();
+}
+
+function generatorPlay(url) {
+	print(getLangString("GL"));
+	var m = url.match("id\=([a-zA-z0-9\.]{3,})");
+	if (m != null && m[1] != null)
+	{
+		print(getLangString("GS"));
+		openURL("http://apk-downloaders.com/download/dl.php?dl=" + m[1]);
+	}
 }
 
 function generator4shared(url) {

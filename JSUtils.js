@@ -70,3 +70,7 @@ function dpToPx(dp) {
 	var px = android.util.TypedValue.applyDimension(android.util.TypedValue.COMPLEX_UNIT_DIP, dp, mActivity.getResources().getDisplayMetrics());
 	return px;
 }
+
+function pInt(value){
+	return new java.lang.Integer(value);
+}
