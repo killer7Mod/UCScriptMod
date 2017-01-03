@@ -1,4 +1,4 @@
-Version: 0.00060
+Version: 0.00061
 
 Changes:
 *Generator Play Store(Updated 03/01/2017)
@@ -8,10 +8,11 @@ Changes:
 *JavaScript Injector
 *Generator 4Shared
 *Generator userscloud
-*Generator dailyuploads
-*Javacript Proxy TurboHide
+*Generator dailyuploads(Updated 03/01/2017)
+*Javascript Proxy TurboHide
+*Javascript Skip Protector DDoS CloudFire
 |
-Versão: 0.00060
+Versão: 0.00061
 
 Mudanças:
 *Gerador de Download da Play Store(Atualizado 03/01/2017)
@@ -21,5 +22,6 @@ Mudanças:
 *JavaScript Injetor
 *Gerador do 4Shared
 *Gerador do Userscloud
-*Gerador do dailyuploads
-*Javacript Proxy TurboHide
+*Gerador do dailyuploads(Atualizado 03/01/2017)
+*Javascript Proxy TurboHide
+*Javascript Pula Proteção DDoS do CloudFire

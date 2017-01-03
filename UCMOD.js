@@ -7,7 +7,6 @@ var FDIR = mActivity.getFilesDir();
 var DEBUG = new java.io.File("/sdcard/DEBUG").exists();
 // Test for scripts
 
-
 if (DEBUG)
 {
 	eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/Lang.js")));
@@ -36,6 +35,14 @@ var Utils = Packages.com.wmods.modding.Utils;
 var LangUtils = Packages.com.wmods.utils.LangUtils;
 var LayoutParams = Packages.android.widget.LinearLayout.LayoutParams;
 var TextUtils = Packages.android.text.TextUtils;
+var LinearLayout = Packages.android.widget.LinearLayout;
+var Spinner = Packages.android.widget.Spinner;
+var ArrayAdapter = Packages.android.widget.ArrayAdapter;
+var ListView = Packages.android.widget.ListView;
+var TextView = Packages.android.widget.TextView;
+var CheckBox = Packages.android.widget.CheckBox;
+var EditText = Packages.android.widget.EditText;
+var Action = Packages.com.wmods.activities.Action;
 
 // url clicked
 // Parameter @{String=url} = "Url Clicked"
@@ -69,7 +76,7 @@ function hook_url(url) {
 		|| (host.contains("userscloud.com") && mOptions[0][4])
 		|| ((host.equals("dailyuploads.net") || host.equals("www.dailyuploads.net")) && mOptions[0][5]))
 	{
-		generator(url);
+		generatorLink(url);
 		return true;
 	}
 
@@ -221,9 +228,10 @@ function hook_menu_draw(id, al) {
 	{
 		case 0xfe04:
 		case 0xfa01:
-			if (DEBUG)
-				al.add(getDraw("/sdcard/javascript2/jsmod.png"));
-			else
+			if (DEBUG){
+				al.add(getDraw("/sdcard/javascriptmod/jsmod.png"));
+				break;
+				}
 				al.add(getDraw(FDIR.getAbsolutePath() + "/script/jsmod.png"));
 			break;
 
@@ -290,7 +298,7 @@ function showJSMOD() {
 			var clazz = getClasse("agd");
 			GUIPainel = clazz.getConstructor(android.content.Context).newInstance(mActivity);
 			GUIPainel.setTitle("JSMOD");
-			var layout = new android.widget.LinearLayout(mActivity);
+			var layout = new LinearLayout(mActivity);
 			layout.setBackgroundColor(0xffffff);
 			layout.setOrientation(1);
 
@@ -298,16 +306,16 @@ function showJSMOD() {
 			for (var i=0;i < GUIOptions.length;i++)
 				names[i] = GUIOptions[i].name;
 
-			var spinner = new android.widget.Spinner(mActivity);
+			var spinner = new Spinner(mActivity);
 			var lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 			lp.setMargins(0, 0, 0, dpToPx(3));
 			spinner.setLayoutParams(lp);
-			var adapter = new android.widget.ArrayAdapter(mActivity, 17367050, JsArrayToJavaArray(java.lang.String, names));
+			var adapter = new ArrayAdapter(mActivity, 17367050, JsArrayToJavaArray(java.lang.String, names));
 			spinner.setAdapter(adapter);
 			spinner.setBackgroundColor(android.graphics.Color.rgb(0, 00, 0x3f));
 			scroll = new android.widget.ScrollView(mActivity);
 			scroll.setScrollbarFadingEnabled(false);
-			layoutOptions = new android.widget.LinearLayout(mActivity);
+			layoutOptions = new LinearLayout(mActivity);
 			layoutOptions.setBackgroundColor(android.graphics.Color.rgb(0, 0, 0));
 			layoutOptions.setOrientation(1);
 			spinner.setOnItemSelectedListener(
@@ -348,13 +356,13 @@ function showEditor(position) {
 		function() {
 			var Painel = new android.app.AlertDialog.Builder(mActivity);
 			Painel.setTitle("JavaScript " + getLangString("CODE"));
-			var layout = new android.widget.LinearLayout(mActivity);
+			var layout = new LinearLayout(mActivity);
 			layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 			layout.setOrientation(1);
 			layout.setBackgroundColor(android.graphics.Color.BLACK);
-			var t = new android.widget.TextView(mActivity);
+			var t = new TextView(mActivity);
 			t.setText(getLangString("NAME") + ": " + tempJSN.get(position));
-			var et = new android.widget.EditText(mActivity);
+			var et = new EditText(mActivity);
 			et.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, dpToPx(200)));
 			et.setGravity(android.view.Gravity.TOP);
 			et.setText(tempJS.get(position));
@@ -476,6 +484,8 @@ function loadOptions() {
 	{
 		tempJSN.add("Proxy TurboHide");
 		tempJS.add(baseToString("ZG9jdW1lbnQud3JpdGUoJzxzY3JpcHQgc3JjPSJodHRwOi8vcGFzdGViaW4uY29tL3Jhdy9TdVNVMHhMdCIgPjwvc2NyaXB0PicpOw=="));
+		tempJSN.add("Skip CloudFire DDoS");
+		tempJS.add("KGZ1bmN0aW9uKCl7DQp2YXIgeD1kb2N1bWVudC5nZXRFbGVtZW50c0J5VGFnTmFtZSgic2NyaXB0IilbMF0uaW5uZXJIVE1MOw0KdmFyIHBvcyA9IHguaW5kZXhPZigic2V0VGltZW91dChmdW5jdGlvbigpIikgKyAxMTsNCnZhciBwb3MyID0geC5pbmRleE9mKCIsIDQwMDAiKTsNCmV2YWwoIigiK3guc3Vic3RyaW5nKHBvcyxwb3MyKSsiKSgpIik7DQp9KSgpOw==");
 	}
 	mOptions[1] = [tempJSN,tempJS];
 }
@@ -686,12 +696,39 @@ function directGoogle(url) {
 }
 
 
-function generator(url) {
+function generatorAuto(url) {
 	print(getLangString("GL"));
 	new java.lang.Thread(
 		{
 			run:function() {
 				var content = getStringURL("http://www.autogeneratelink.com/link.php?link=" + java.net.URLEncoder.encode(url) + "&token=agl");
+				var m;
+				try
+				{
+					m = content.match("href='([^\\']+)'");
+				}catch(e){
+					print(e);
+				}
+				if (m && isURL(m[1]))
+				{
+					print(getLangString("GS"));
+					openURL(m[1]);
+				}
+				else
+				{
+					print(getLangString("GE"));
+					openURLDirect(url);
+				}
+			}
+		}).start();
+}
+
+function generatorLink(url) {
+	print(getLangString("GL"));
+	new java.lang.Thread(
+		{
+			run:function() {
+				var content = getStringURL("http://www.linkgenerate.com/link.php?link=" + java.net.URLEncoder.encode(url) + "&token=agl");
 				var m;
 				try
 				{

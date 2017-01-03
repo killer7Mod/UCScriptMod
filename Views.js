@@ -14,12 +14,12 @@ function getGenerators(){
 	var margin = dpToPx(10);
 	params.setMargins(0,margin,0,margin);
 	for(var i=0;i < names.length;i++){
-		var cbox = new android.widget.CheckBox(mActivity);
+		var cbox = new CheckBox(mActivity);
 		cbox.setTag(i);
 		cbox.setText(names[i]);
 		cbox.setLayoutParams(params);
 		cbox.setSelected(true);
-		cbox.setEllipsize(android.text.TextUtils.TruncateAt.MARQUEE);
+		//cbox.setEllipsize(TextUtils.TruncateAt.MARQUEE);
 		cbox.setSingleLine(true);
 		cbox.setOnCheckedChangeListener(function(view,bool){
 		var i = Math.floor(view.getTag());
@@ -32,7 +32,7 @@ function getGenerators(){
 
 function getOther(){
 	var arr = [];
-	arr[0] = new android.widget.TextView(mActivity);
+	arr[0] = new TextView(mActivity);
 	arr[0].setText("UC Super MOD: New Functions\nComing soon...");
 	arr[0].setTextSize(18);
 	arr[1] = new com.uc.browser.UCButton(mActivity);
@@ -47,7 +47,7 @@ function getOther(){
 
 function getJavascript(){
 	var arr = [];
-	var t1 = new android.widget.ListView(mActivity);
+	var t1 = new ListView(mActivity);
 	t1.setScrollbarFadingEnabled(false);
 	var lp = new LayoutParams(LayoutParams.MATCH_PARENT,dpToPx(200));
 	lp.setMargins(0,dpToPx(10),0,0);
@@ -80,11 +80,11 @@ function newJavascript(){
 	var params = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
 	var margin = dpToPx(10);
 	params.setMargins(0,margin,0,0);
-	var t1 = new android.widget.TextView(mActivity);
+	var t1 = new TextView(mActivity);
 	t1.setText(getLangString("NAME"));
 	var et1 = new com.uc.browser.UCEditText(mActivity);
 	et1.addTextChangedListener(textwatcher);
-	var t2 = new android.widget.TextView(mActivity);
+	var t2 = new TextView(mActivity);
 	t2.setText(getLangString("CODE"));
 	var et2 = new com.uc.browser.UCEditText(mActivity);
 	et2.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,dpToPx(150)));
@@ -92,7 +92,8 @@ function newJavascript(){
 	//et2.addTextChangedListener(textwatcher);
 	var btn = new com.uc.browser.UCButton(mActivity);
 	btn.setLayoutParams(params);
-	btn.setOnClickListener(function(view){
+	btn.setOnClickListener(
+	function(view){
 	var text = et1.getText().toString();
 	var text2 = et2.getText().toString();
 	if(text.trim().length() == 0 || text2.trim().length() == 0){
