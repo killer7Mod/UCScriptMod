@@ -1,4 +1,4 @@
-Version: 0.00061
+Version: 0.000611
 
 Changes:
 *Generator Play Store(Updated 03/01/2017)
@@ -12,7 +12,7 @@ Changes:
 *Javascript Proxy TurboHide
 *Javascript Skip Protector DDoS CloudFire
 |
-Versão: 0.00061
+Versão: 0.000611
 
 Mudanças:
 *Gerador de Download da Play Store(Atualizado 03/01/2017)
