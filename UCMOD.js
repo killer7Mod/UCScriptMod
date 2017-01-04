@@ -294,7 +294,7 @@ function showJSMOD() {
 
 			var names = [];
 			for (var i=0;i < GUIOptions.length;i++)
-				if (DEBUG || !GUIOptions[i].debug)
+				if (DEBUG || GUIOptions[i].debug == false)
 					names.push(GUIOptions[i].name);
 			var spinner = new Spinner(mActivity);
 			var lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);

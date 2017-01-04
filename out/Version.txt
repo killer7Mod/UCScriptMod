@@ -1,4 +1,4 @@
-Version: 0.00063
+Version: 0.000631
 
 Changes:
 *Generator Play Store(Updated 03/01/2017)
@@ -11,8 +11,9 @@ Changes:
 *Generator dailyuploads(Updated 03/01/2017)
 *Javascript Proxy TurboHide
 *Javascript Skip Protector DDoS CloudFlare
+*Generator Upfile
 |
-Versão: 0.00063
+Versão: 0.000631
 
 Mudanças:
 *Gerador de Download da Play Store(Atualizado 03/01/2017)
@@ -25,3 +26,4 @@ Mudanças:
 *Gerador do dailyuploads(Atualizado 03/01/2017)
 *Javascript Proxy TurboHide
 *Javascript Pula Proteção DDoS do CloudFlare
+*Gerador do Upfile
