@@ -14,15 +14,12 @@ if (DEBUG)
 	eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/JSUtils.js")));
 }
 
-var update;
-var version = "0.0.9";
 var menu_di;
-var iniProp;
 var GUIPainel;
 var mOptions;
 var tempG = [];
-var tempJS = new java.util.ArrayList();
-var tempJSN = new java.util.ArrayList();
+var JSNAMES = new java.util.ArrayList();
+var JSCODES = new java.util.ArrayList();
 var mPos;
 var layoutOptions;
 var scroll;
@@ -78,10 +75,16 @@ function hook_url(url) {
 		generatorAuto(url);
 		return true;
 	}
-	
-	if ((host.equals("dailyuploads.net") || host.equals("www.dailyuploads.net")) && mOptions[0][5]))
+
+	if ((host.equals("dailyuploads.net") || host.equals("www.dailyuploads.net")) && mOptions[0][5])
 	{
 		generatorLink(url);
+		return true;
+	}
+
+	if (host.contains("upfile.mobi") && mOptions[0][6])
+	{
+		generatorAuto(url);
 		return true;
 	}
 
@@ -99,12 +102,6 @@ function hook_url(url) {
 	if (DEBUG && host.contains("upload.mobi") && mUrl.getPath() ? !mUrl.getPath().contains("download") : false)
 	{
 		generatorUpload(url);
-		return true;
-	}
-
-	if (host.contains("ucmod.script"))
-	{
-		addNewJS(url);
 		return true;
 	}
 
@@ -198,10 +195,7 @@ function hook_select_button_listener(o, id) {
 // Parameter @{Object=cw} = "Class com.uc.browser.cw"
 // Parameter @{ArrayList=al} = "Add Class com.uc.browser.di<init>(III)V {id,name_id,drawable_id}"
 function hook_menu_new(cw, al) {
-	menu_di = new_menu(0xff04, 0xff03, 0xfe04);
-	menu_di.d(isUpdated());
-	al.add(menu_di);
-
+	al.add(new_menu(0xff04, 0xff03, 0xfe04));
 	if (DEBUG)
 	{
 		al.add(new_menu(0xfa01, 0xfa01, 0xfa01));
@@ -233,11 +227,12 @@ function hook_menu_draw(id, al) {
 	{
 		case 0xfe04:
 		case 0xfa01:
-			if (DEBUG){
+			if (DEBUG)
+			{
 				al.add(getDraw("/sdcard/javascriptmod/jsmod.png"));
 				break;
-				}
-				al.add(getDraw(FDIR.getAbsolutePath() + "/script/jsmod.png"));
+			}
+			al.add(getDraw(FDIR.getAbsolutePath() + "/script/jsmod.png"));
 			break;
 
 	}
@@ -250,22 +245,10 @@ function hook_menu_check(id) {
 	{
 		case 0xff04:
 			showJSMOD();
-			if (isUpdated())
-				setMenuUpdated(false);
 			break;
 		case 0xfa01:
-			initSocket();
+			hook_updated();
 	}
-}
-
-
-function initSocket() {
-	var ym = getClasse("yd").getField("i").get(null);
-	var F = getClasse("yl").getField("F").getInt(null);
-	var m =ym.getClass().getMethod("a", java.lang.Integer.TYPE, java.lang.Integer.TYPE, java.lang.Integer.TYPE, getClasse("java.lang.Object"));
-	var url = ["http://192.99.148.73:8080/live/ciganny/6462/53.m3u8","","","","","","","",""];
-	var array = JsArrayToJavaArray(getClasse("java.lang.String"), url);
-	m.invoke(ym, pInt(F), pInt(1), pInt(0), array);
 }
 
 // ModService
@@ -281,23 +264,25 @@ function newGUIOptions() {
 	GUIOptions = [
 		{
 			name:getLangString("GN"),
-			options:getGenerators()
+			options:getGenerators(),
+			debug:false
 		},
 		{
 			name:"Javascript",
-			options:getJavascript()
+			options:getJavascript(),
+			debug: true
 		},
 		{
 			name:"Other",
-			options:getOther()
+			options:getOther(),
+			debug:false
 		}
 	];
 }
 
 function showJSMOD() {
 	loadOptions();
-	if (!GUIOptions)
-		newGUIOptions();
+	newGUIOptions();
 	mActivity.runOnUiThread(
 		function() {
 			var clazz = getClasse("agd");
@@ -309,8 +294,8 @@ function showJSMOD() {
 
 			var names = [];
 			for (var i=0;i < GUIOptions.length;i++)
-				names[i] = GUIOptions[i].name;
-
+				if (DEBUG || !GUIOptions[i].debug)
+					names.push(GUIOptions[i].name);
 			var spinner = new Spinner(mActivity);
 			var lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 			lp.setMargins(0, 0, 0, dpToPx(3));
@@ -366,11 +351,11 @@ function showEditor(position) {
 			layout.setOrientation(1);
 			layout.setBackgroundColor(android.graphics.Color.BLACK);
 			var t = new TextView(mActivity);
-			t.setText(getLangString("NAME") + ": " + tempJSN.get(position));
+			t.setText(getLangString("NAME") + ": " + JSNAMES.get(position));
 			var et = new EditText(mActivity);
 			et.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, dpToPx(200)));
 			et.setGravity(android.view.Gravity.TOP);
-			et.setText(tempJS.get(position));
+			et.setText(JSCODES.get(position));
 			//et.addTextChangedListener(textwatcher);
 			layout.addView(t);
 			layout.addView(et);
@@ -384,7 +369,7 @@ function showEditor(position) {
 						print(getLangString("F_EMPTY"));
 						return;
 					}
-					tempJS.set(position, text);
+					JSCODES.set(position, text);
 					dialog.dismiss();
 				});
 			Painel.setNeutralButton(LangUtils.getString("CANCEL"), null);
@@ -421,133 +406,68 @@ function setViews(layout, position) {
 	else scroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));	
 	var ops = GUIOptions[position].options;
 	for (var i=0;i < ops.length;i++)
-	{
-		switch (position)
-		{
-			case 0: 
-				if (mOptions[0])
-					ops[i].setChecked(mOptions[0][i]);
-				break;
-			case 1:
-				if (i == 0)
-				{
-					var adapter = new android.widget.ArrayAdapter(mActivity, 17367050, tempJSN);
-					ops[0].setAdapter(adapter);
-				}
-				break;
-		}
 		layout.addView(ops[i]);
-	}
-}
-
-function loadIni() {
-	var file = new java.io.File(FDIR, "JSMOD.ini");
-	iniProp = new java.util.Properties();
-	if (file.exists())
-		iniProp.load(new java.io.FileInputStream(file));
-}
-
-function saveIni() {
-	var file = new java.io.File(FDIR, "JSMOD.ini");
-	iniProp.store(new java.io.FileOutputStream(file), "WellingtonMods");
 }
 
 function loadOptions() {
-	var str;
-	if (!iniProp)
-		loadIni();
+	var prefs = mActivity.getSharedPreferences("JSMOD", 1);
 	mOptions = [];
-	str = iniProp.getProperty("JSMOD", null);
-	if (str)
+
+	// Load Generators
+	var arr = [];
+	var len = getLangString("JSMOD").length;
+	for (var i = 0; i < len; i++)
+		arr.push(prefs.getBoolean("generator_" + i, false));
+	mOptions[0] = tempG = JsArrayToJavaArray(java.lang.Boolean.TYPE, arr);
+
+	// Load Javascript
+	JSNAMES.clear();JSCODES.clear();
+	if (DEBUG)
 	{
-		var tmp = new java.lang.reflect.Array.newInstance(java.lang.Boolean.TYPE, getLangString("JSMOD").length);
-		var split = str.split("\\|");
-		var len = split.length > tmp.length ? tmp.length : split.length;
-		for (i = 0;i < len;i++)
-			tmp[i] = split[i].equals("true");
-		mOptions[0] = tmp;
-	}
-	str = iniProp.getProperty("JSScriptN", null);
-	str2 = iniProp.getProperty("JSScriptV", null);
-	tempJSN = new java.util.ArrayList();
-	tempJS = new java.util.ArrayList();
-	if (DEBUG && str != null && str.length() > 0 && str2 != null)
-	{
-		var split = str2.split("\\|\\|");
-		var split2 = str.split("\\|");
-		for (i = 0;i < split.length;i++)
+		var tmp = new org.json.JSONArray(prefs.getString("JSNAMES", "[]"));
+		var tmp2 = new org.json.JSONArray(prefs.getString("JSCODES", "[]"));
+		for (var i = 0;i < tmp.length();i++)
 		{
-			var code = baseToString(split[i]);
-			if (!code)tempJS.add(split[i]);
-			else tempJS.add(code);
-			var name = baseToString(split2[i]);
-			if (!name)tempJSN.add(split2[i]);
-			else tempJSN.add(name);
+			JSNAMES.add(tmp.getString(i));
+			JSCODES.add(tmp2.getString(i));
 		}
 	}
 	else
 	{
-		tempJSN.add("Proxy TurboHide");
-		tempJS.add(baseToString("ZG9jdW1lbnQud3JpdGUoJzxzY3JpcHQgc3JjPSJodHRwOi8vcGFzdGViaW4uY29tL3Jhdy9TdVNVMHhMdCIgPjwvc2NyaXB0PicpOw=="));
-		tempJSN.add("Skip CloudFlare DDoS");
-		tempJS.add("KGZ1bmN0aW9uKCl7DQp2YXIgeD1kb2N1bWVudC5nZXRFbGVtZW50c0J5VGFnTmFtZSgic2NyaXB0IilbMF0uaW5uZXJIVE1MOw0KdmFyIHBvcyA9IHguaW5kZXhPZigic2V0VGltZW91dChmdW5jdGlvbigpIikgKyAxMTsNCnZhciBwb3MyID0geC5pbmRleE9mKCIsIDQwMDAiKTsNCmV2YWwoIigiK3guc3Vic3RyaW5nKHBvcyxwb3MyKSsiKSgpIik7DQp9KSgpOw==");
+		JSNAMES.add("Proxy TurboHide");
+		JSCODES.add(baseToString("ZG9jdW1lbnQud3JpdGUoJzxzY3JpcHQgc3JjPSJodHRwOi8vcGFzdGViaW4uY29tL3Jhdy9TdVNVMHhMdCIgPjwvc2NyaXB0PicpOw=="));
+		JSNAMES.add("Skip CloudFlare DDoS");
+		JSCODES.add(baseToString("KGZ1bmN0aW9uKCl7dmFyIHg9ZG9jdW1lbnQuZ2V0RWxlbWVudHNCeVRhZ05hbWUoInNjcmlwdCIpWzBdLmlubmVySFRNTDt2YXIgcG9zPXguaW5kZXhPZigic2V0VGltZW91dChmdW5jdGlvbigpIikrMTE7dmFyIHBvczI9eC5pbmRleE9mKCIsIDQwMDAiKTtldmFsKCIoIit4LnN1YnN0cmluZyhwb3MscG9zMikrIikoKSIpO30pKCk7"));
 	}
-	mOptions[1] = [tempJSN,tempJS];
+	mOptions[1] = [JSNAMES,JSCODES];
+
 }
 
 function saveOptions() {
-	var tmp,i;
+	var editor = mActivity.getSharedPreferences("JSMOD", 0).edit();
 	mOptions[0] = tempG;
-	mOptions[1] = [tempJSN,tempJS];
-	var s = TextUtils.join("|", tempG);
-	tmp = tempJSN.toArray();
-	for (i = 0;i < tmp.length;i++)
-		tmp[i] = stringToBase(tmp[i]);
-	var s1 = TextUtils.join("|", tmp);
-	tmp = tempJS.toArray();
-	for (i = 0;i < tmp.length;i++)
-		tmp[i] = stringToBase(tmp[i]);
-	var s2 = TextUtils.join("||", tmp);
-	if (iniProp == null)loadIni();
-	iniProp.setProperty("JSMOD", s);
-	iniProp.setProperty("JSScriptN", s1);
-	iniProp.setProperty("JSScriptV", s2);
-	saveIni();
-}
+	mOptions[1] = [JSNAMES,JSCODES];
 
+	//Save Generators
+	var len = getLangString("JSMOD").length;
+	for (var i = 0; i < len; i++)
+		editor.putBoolean("generator_" + i, mOptions[0][i]);
+	editor.commit();
 
-function setMenuUpdated(bool) {
-	if (menu_di != null)
+	//Save Javascript
+	if (DEBUG)
 	{
-		var m = com.uc.browser.p.f();
-		var f = m.getClass().getDeclaredField("y");
-		f.setAccessible(true);
-		var mCw = f.get(m);
-		var f = mCw.getClass().getDeclaredField("A");
-		f.setAccessible(true);
-		var menu = f.get(mCw).get(java.lang.Integer.valueOf(0xff04));
-		menu_di.d(bool);
-		menu.a(menu_di);
+		var tmp = new org.json.JSONArray();
+		var tmp2 = new org.json.JSONArray();
+		for (var i = 0;i < mOptions[1][0].size();i++)
+		{
+			tmp.put(mOptions[1][0].get(i));
+			tmp2.put(mOptions[1][1].get(i));
+		}
+		editor.putString("JSNAMES", tmp.toString());
+		editor.putString("JSCODES", tmp2.toString());
+		editor.commit();
 	}
-	if (!bool)
-		setUpdate();
-}
-
-function isUpdated() {
-	if (update == null)
-	{
-		if (iniProp == null)
-			loadIni();
-		update = iniProp.getProperty("UPDATED", null);
-	}
-	return !version.equals(update);
-}
-
-function setUpdate() {
-	if (iniProp == null)
-		loadIni();
-	iniProp.setProperty("UPDATED", version);
-	saveIni();
 }
 
 function showUpdate() {
@@ -557,8 +477,6 @@ function showUpdate() {
 			var painel = clazz.getConstructor(android.content.Context).newInstance(mActivity);
 			painel.setTitle(getLangString("JSUP"));
 			var content = Utils.readFile(FDIR.getAbsolutePath() + "/script/UCMOD.txt");
-			//var content = pmod.Utils.readFile("/sdcard/1/UCMOD.txt");
-			//print(content);
 			if (content == null)
 				return;
 			var s = content.split("\\|");
@@ -665,26 +583,6 @@ function checkYlId(array, id) {
  }
  */
 
-function addNewJS(s) {
-	var pos = s.indexOf("ucmod.script");
-	var split = s.substring(pos).split("/");
-	var name = baseToString(split[1]);
-	var code = baseToString(split[2]);
-	if (!name || !code)return;
-	loadOptions();
-	if (tempJSN.contains(name))
-	{
-		print("Script já existe!!");
-		return;
-	}
-	tempJSN.add(name);
-	tempJS.add(code);
-	saveOptions();
-	print("Script adicionado: " + name);
-}
-
-
-
 function directGoogle(url) {
 	var parts = url.match(/\/d\/(.+)\//);
 	if (parts == null || parts.length < 2)
@@ -694,7 +592,7 @@ function directGoogle(url) {
 	else
 	{
 		print(getLangString("GS"));
-		var u = "https://drive.google.com/uc?export=download&id=" + parts[1];
+		var u = "http://drive.google.com/uc?export=download&id=" + parts[1];
 		openURLDirect(u);
 		return true;
 	}

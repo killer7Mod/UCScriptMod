@@ -1,4 +1,4 @@
-Version: 0.000611
+Version: 0.00063
 
 Changes:
 *Generator Play Store(Updated 03/01/2017)
@@ -6,13 +6,13 @@ Changes:
 *Generator Mega
 *View Source Page
 *JavaScript Injector
-*Generator 4Shared
+*Generator 4Shared(OFF)
 *Generator userscloud
 *Generator dailyuploads(Updated 03/01/2017)
 *Javascript Proxy TurboHide
-*Javascript Skip Protector DDoS CloudFire
+*Javascript Skip Protector DDoS CloudFlare
 |
-Versão: 0.000611
+Versão: 0.00063
 
 Mudanças:
 *Gerador de Download da Play Store(Atualizado 03/01/2017)
@@ -20,8 +20,8 @@ Mudanças:
 *Gerador do de Download do Mega(Mega.co.nz,Mega.nz)
 *Ver Código fonte da página
 *JavaScript Injetor
-*Gerador do 4Shared
+*Gerador do 4Shared(OFF)
 *Gerador do Userscloud
 *Gerador do dailyuploads(Atualizado 03/01/2017)
 *Javascript Proxy TurboHide
-*Javascript Pula Proteção DDoS do CloudFire
+*Javascript Pula Proteção DDoS do CloudFlare

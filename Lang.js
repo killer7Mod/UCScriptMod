@@ -6,7 +6,7 @@ function loadLang(){
 	if(l.equals("pt"))
 	mLang = {
 	LANG:"pt",
-	JSMOD:["Gerador Play Store","Gerador Google Drive","Gerador Mega","Gerador 4shared","Gerador Userscloud","Gerador dailyuploads"],
+	JSMOD:["Gerador Play Store","Gerador Google Drive","Gerador Mega","Gerador 4shared","Gerador Userscloud","Gerador dailyuploads","Gerador Upfile"],
 	GN:"Geradores",
 	VS:"Ver Codigo Fonte",
 	GL:"Gerando link...",
@@ -26,7 +26,7 @@ function loadLang(){
 	else
 	mLang = {
 	LANG:"en",
-	JSMOD:["Generator Play Store","Generator Google Drive","Generator Mega","Generator 4Shared","Generator Userscloud","Generator dailyuploads"],
+	JSMOD:["Generator Play Store","Generator Google Drive","Generator Mega","Generator 4Shared","Generator Userscloud","Generator dailyuploads","Generator Upfile"],
 	GN:"Generators",
 	VS:"View Source",
 	GL:"Generating Link...",
