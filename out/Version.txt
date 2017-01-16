@@ -1,4 +1,4 @@
-Version: 0.000631
+Version: 0.0007
 
 Changes:
 *Generator Play Store(Updated 03/01/2017)
@@ -12,8 +12,9 @@ Changes:
 *Javascript Proxy TurboHide
 *Javascript Skip Protector DDoS CloudFlare
 *Generator Upfile
+*Added Custom Proxy in JS MOD (Enable in Menu Extra)
 |
-Versão: 0.000631
+Versão: 0.0007
 
 Mudanças:
 *Gerador de Download da Play Store(Atualizado 03/01/2017)
@@ -27,3 +28,4 @@ Mudanças:
 *Javascript Proxy TurboHide
 *Javascript Pula Proteção DDoS do CloudFlare
 *Gerador do Upfile
+*Adicionado Custom Proxy no JS MOD (Ative no Menu Extra)

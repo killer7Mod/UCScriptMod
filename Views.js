@@ -26,7 +26,7 @@ function getGenerators() {
 		cbox.setOnCheckedChangeListener(
 			function(view, bool) {
 				var i = Math.floor(view.getTag());
-				tempG[i] = bool;
+				mOptions[0][i] = bool;
 			});
 		if (mOptions[0] != null && i < mOptions[0].length)
 		{
@@ -34,6 +34,25 @@ function getGenerators() {
 		}
 		arr[i] = cbox;
 	}
+	return arr;
+}
+
+function getProxyLayout(){
+	var arr = [];
+	arr[0] = new TextView(mActivity);
+	arr[0].setText("Select Proxy");
+	arr[1] = new Spinner(mActivity);
+	var options = ["MUCHPROXY [USA]"];
+	arr[1].setAdapter(new ArrayAdapter(mActivity,17367050,JsArrayToJavaArray(java.lang.String,options)));
+	arr[1].setOnItemSelectedListener({
+		onItemSelected:function(parent,view,position,id){
+		  mOptions[2] = position;
+		},
+		onNothingSelected:function(view){}
+	});
+	
+	if(mOptions != null && mOptions.length > 1)
+	arr[1].setSelection(mOptions[2]);
 	return arr;
 }
 
@@ -138,4 +157,40 @@ function newJavascript() {
 	layoutOptions.addView(et2);
 	layoutOptions.addView(btn);
 	layoutOptions.addView(btn2);
+}
+
+function showEditor(position) {
+	mActivity.runOnUiThread(
+		function() {
+			var Painel = new android.app.AlertDialog.Builder(mActivity);
+			Painel.setTitle("JavaScript " + getLangString("CODE"));
+			var layout = new LinearLayout(mActivity);
+			layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			layout.setOrientation(1);
+			layout.setBackgroundColor(android.graphics.Color.BLACK);
+			var t = new TextView(mActivity);
+			t.setText(getLangString("NAME") + ": " + JSNAMES.get(position));
+			var et = new EditText(mActivity);
+			et.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, dpToPx(200)));
+			et.setGravity(android.view.Gravity.TOP);
+			et.setText(JSCODES.get(position));
+			//et.addTextChangedListener(textwatcher);
+			layout.addView(t);
+			layout.addView(et);
+			Painel.setView(layout);
+			Painel.setPositiveButton(
+				LangUtils.getString("SAVE"), 
+				function(dialog, pos) {
+					var text = et.getText().toString();
+					if (text.trim().length() == 0)
+					{
+						print(getLangString("F_EMPTY"));
+						return;
+					}
+					JSCODES.set(position, text);
+					dialog.dismiss();
+				});
+			Painel.setNeutralButton(LangUtils.getString("CANCEL"), null);
+			Painel.show();
+		});
 }

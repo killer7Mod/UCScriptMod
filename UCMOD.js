@@ -17,7 +17,6 @@ if (DEBUG)
 var menu_di;
 var GUIPainel;
 var mOptions;
-var tempG = [];
 var JSNAMES = new java.util.ArrayList();
 var JSCODES = new java.util.ArrayList();
 var mPos;
@@ -126,16 +125,20 @@ function hook_url(url) {
 function hook_updated() {
 	loadLang();
 	loadOptions();
-	/*
-	 var m = com.uc.browser.p.f();
-	 var f = m.getClass().getDeclaredField("y");
-	 f.setAccessible(true);
-	 if (f.get(m) != null)
-	 {
-	 f.set(m, new com.uc.browser.cm(mActivity));
-	 }
-	 */
-	showUpdate();
+	var ht = new android.os.HandlerThread("update");
+	ht.start();
+	new android.os.Handler(ht.getLooper()).post(
+		function() {
+			java.lang.Thread.sleep(5000);
+			showUpdate();
+			var m = com.uc.browser.p.f();
+			var f = m.getClass().getDeclaredField("y");
+			f.setAccessible(true);
+			if (f.get(m) != null)
+			{
+				f.set(m, new com.uc.browser.cm(mActivity));
+			}
+		});
 }
 
 // Select File Browser
@@ -145,6 +148,15 @@ function hook_select_file(filename) {
 }
 
 function hook_proxy(param) {
+	if (mOptions == null)loadOptions();
+	
+	switch(mOptions[2])
+	{
+		case 0:
+		param[0] = "http://us.muchproxy.com/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
+		param[1] = "http://us.muchproxy.com/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
+		break;
+	}
 	return false;
 }
 
@@ -273,10 +285,15 @@ function newGUIOptions() {
 			debug: true
 		},
 		{
+			name:"Custom Proxy",
+			options:getProxyLayout(),
+			debug: false
+		},
+		{
 			name:"Other",
 			options:getOther(),
 			debug:false
-		}
+		} 
 	];
 }
 
@@ -312,7 +329,6 @@ function showJSMOD() {
 				{
 					onItemSelected:function(adapter, view, position, id) {
 						setViews(layoutOptions, position);
-						mPos = position;
 					},
 					onNothingSelected:function(adapter) {
 
@@ -341,41 +357,7 @@ function showJSMOD() {
 	);
 }
 
-function showEditor(position) {
-	mActivity.runOnUiThread(
-		function() {
-			var Painel = new android.app.AlertDialog.Builder(mActivity);
-			Painel.setTitle("JavaScript " + getLangString("CODE"));
-			var layout = new LinearLayout(mActivity);
-			layout.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-			layout.setOrientation(1);
-			layout.setBackgroundColor(android.graphics.Color.BLACK);
-			var t = new TextView(mActivity);
-			t.setText(getLangString("NAME") + ": " + JSNAMES.get(position));
-			var et = new EditText(mActivity);
-			et.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, dpToPx(200)));
-			et.setGravity(android.view.Gravity.TOP);
-			et.setText(JSCODES.get(position));
-			//et.addTextChangedListener(textwatcher);
-			layout.addView(t);
-			layout.addView(et);
-			Painel.setView(layout);
-			Painel.setPositiveButton(
-				LangUtils.getString("SAVE"), 
-				function(dialog, pos) {
-					var text = et.getText().toString();
-					if (text.trim().length() == 0)
-					{
-						print(getLangString("F_EMPTY"));
-						return;
-					}
-					JSCODES.set(position, text);
-					dialog.dismiss();
-				});
-			Painel.setNeutralButton(LangUtils.getString("CANCEL"), null);
-			Painel.show();
-		});
-}
+
 
 function showJSInjector() {
 	mActivity.runOnUiThread(
@@ -403,10 +385,15 @@ function setViews(layout, position) {
 	layout.removeAllViews();
 	if (position == 0)
 		scroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, dpToPx(150)));
-	else scroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));	
+	else scroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+	while (DEBUG == false && GUIOptions[position].debug == true)
+	{
+		position++;
+	}
 	var ops = GUIOptions[position].options;
 	for (var i=0;i < ops.length;i++)
 		layout.addView(ops[i]);
+	mPos = position;
 }
 
 function loadOptions() {
@@ -418,7 +405,7 @@ function loadOptions() {
 	var len = getLangString("JSMOD").length;
 	for (var i = 0; i < len; i++)
 		arr.push(prefs.getBoolean("generator_" + i, false));
-	mOptions[0] = tempG = JsArrayToJavaArray(java.lang.Boolean.TYPE, arr);
+	mOptions[0] = JsArrayToJavaArray(java.lang.Boolean.TYPE, arr);
 
 	// Load Javascript
 	JSNAMES.clear();JSCODES.clear();
@@ -441,11 +428,14 @@ function loadOptions() {
 	}
 	mOptions[1] = [JSNAMES,JSCODES];
 
+	// Load Position Proxy
+	mOptions[2] = prefs.getInt("JSPROXY", 0);
+
 }
 
 function saveOptions() {
 	var editor = mActivity.getSharedPreferences("JSMOD", 0).edit();
-	mOptions[0] = tempG;
+
 	mOptions[1] = [JSNAMES,JSCODES];
 
 	//Save Generators
@@ -466,6 +456,7 @@ function saveOptions() {
 		}
 		editor.putString("JSNAMES", tmp.toString());
 		editor.putString("JSCODES", tmp2.toString());
+		editor.putInt("JSPROXY", mOptions[2]);
 		editor.commit();
 	}
 }
