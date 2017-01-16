@@ -4,7 +4,7 @@
  */
 var mActivity = getMainContext(0);
 var FDIR = mActivity.getFilesDir();
-var DEBUG = new java.io.File("/sdcard/DEBUG").exists();
+var DEBUG = new java.io.File("/sdcard/javascript").exists();
 // Test for scripts
 
 if (DEBUG)
@@ -207,7 +207,7 @@ function hook_select_button_listener(o, id) {
 // Parameter @{Object=cw} = "Class com.uc.browser.cw"
 // Parameter @{ArrayList=al} = "Add Class com.uc.browser.di<init>(III)V {id,name_id,drawable_id}"
 function hook_menu_new(cw, al) {
-	al.add(new_menu(0xff04, 0xff03, 0xfe04));
+	al.add(new_menu(0xf004, 0xf003, 0xf104));
 	if (DEBUG)
 	{
 		al.add(new_menu(0xfa01, 0xfa01, 0xfa01));
@@ -222,7 +222,7 @@ function hook_menu_new(cw, al) {
 function hook_menu_name(id, al) {
 	switch (id)
 	{
-		case 0xff03:
+		case 0xf003:
 			al.add("JS MOD");
 			break;
 		case 0xfa01:
@@ -237,7 +237,7 @@ function hook_menu_name(id, al) {
 function hook_menu_draw(id, al) {
 	switch (id)
 	{
-		case 0xfe04:
+		case 0xf104:
 		case 0xfa01:
 			if (DEBUG)
 			{
@@ -255,7 +255,7 @@ function hook_menu_draw(id, al) {
 function hook_menu_check(id) {
 	switch (id)
 	{
-		case 0xff04:
+		case 0xf004:
 			showJSMOD();
 			break;
 		case 0xfa01:
