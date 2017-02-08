@@ -2,8 +2,6 @@
  * obj.Z() // UcWebView
  * Z().q() // Url of page
  */
-var mActivity = getMainContext(0);
-var FDIR = mActivity.getFilesDir();
 var DEBUG = new java.io.File("/sdcard/javascript").exists();
 // Test for scripts
 
@@ -98,7 +96,7 @@ function hook_url(url) {
 		generator4shared(url.replace("www.4shared.com", "www.goowap.com"));	
 	}
 
-	if (DEBUG && host.contains("upload.mobi") && mUrl.getPath() ? !mUrl.getPath().contains("download") : false)
+	if (DEBUG && host.contains("uplxoad.mobi") && mUrl.getPath() ? !mUrl.getPath().contains("download") : false)
 	{
 		generatorUpload(url);
 		return true;
@@ -153,8 +151,8 @@ function hook_proxy(param) {
 	switch(mOptions[2])
 	{
 		case 0:
-		param[0] = "http://us.muchproxy.com/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
-		param[1] = "http://us.muchproxy.com/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
+		param[0] = "http://multiwebproxy.com/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
+		param[1] = "http://multiwebproxy.com/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
 		break;
 	}
 	return false;
@@ -182,7 +180,7 @@ function hook_options_button(o, id) {
 		var url = o.Y().ag();
 		if (url == null)url = o.S;
 		intent.setData(android.net.Uri.parse(url));
-		mActivity.startActivity(android.content.Intent.createChooser(intent, "URL"));
+		getActivity().startActivity(android.content.Intent.createChooser(intent, "URL"));
 	}
 }
 
@@ -244,7 +242,7 @@ function hook_menu_draw(id, al) {
 				al.add(getDraw("/sdcard/javascriptmod/jsmod.png"));
 				break;
 			}
-			al.add(getDraw(FDIR.getAbsolutePath() + "/script/jsmod.png"));
+			al.add(getDraw(getActivity().getFilesDir().getAbsolutePath() + "/script/jsmod.png"));
 			break;
 
 	}
@@ -300,12 +298,12 @@ function newGUIOptions() {
 function showJSMOD() {
 	loadOptions();
 	newGUIOptions();
-	mActivity.runOnUiThread(
+	getActivity().runOnUiThread(
 		function() {
 			var clazz = getClasse("agd");
-			GUIPainel = clazz.getConstructor(android.content.Context).newInstance(mActivity);
+			GUIPainel = clazz.getConstructor(android.content.Context).newInstance(getActivity());
 			GUIPainel.setTitle("JSMOD");
-			var layout = new LinearLayout(mActivity);
+			var layout = new LinearLayout(getActivity());
 			layout.setBackgroundColor(0xffffff);
 			layout.setOrientation(1);
 
@@ -313,16 +311,16 @@ function showJSMOD() {
 			for (var i=0;i < GUIOptions.length;i++)
 				if (DEBUG || GUIOptions[i].debug == false)
 					names.push(GUIOptions[i].name);
-			var spinner = new Spinner(mActivity);
+			var spinner = new Spinner(getActivity());
 			var lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 			lp.setMargins(0, 0, 0, dpToPx(3));
 			spinner.setLayoutParams(lp);
-			var adapter = new ArrayAdapter(mActivity, 17367050, JsArrayToJavaArray(java.lang.String, names));
+			var adapter = new ArrayAdapter(getActivity(), 17367050, JsArrayToJavaArray(java.lang.String, names));
 			spinner.setAdapter(adapter);
 			spinner.setBackgroundColor(android.graphics.Color.rgb(0, 00, 0x3f));
-			scroll = new android.widget.ScrollView(mActivity);
+			scroll = new android.widget.ScrollView(getActivity());
 			scroll.setScrollbarFadingEnabled(false);
-			layoutOptions = new LinearLayout(mActivity);
+			layoutOptions = new LinearLayout(getActivity());
 			layoutOptions.setBackgroundColor(android.graphics.Color.rgb(0, 0, 0));
 			layoutOptions.setOrientation(1);
 			spinner.setOnItemSelectedListener(
@@ -363,7 +361,7 @@ function showJSInjector() {
 	mActivity.runOnUiThread(
 		function() {
 			var clazz = getClasse("agd");
-			GUIPainel = clazz.getConstructor(android.content.Context).newInstance(mActivity);
+			GUIPainel = clazz.getConstructor(android.content.Context).newInstance(getActivity());
 			GUIPainel.setTitle("JavaScript " + getLangString("CODE"));
 			if (mOptions[1][0].size() == 0)
 			{
@@ -397,7 +395,7 @@ function setViews(layout, position) {
 }
 
 function loadOptions() {
-	var prefs = mActivity.getSharedPreferences("JSMOD", 1);
+	var prefs = getActivity().getSharedPreferences("JSMOD", 1);
 	mOptions = [];
 
 	// Load Generators
@@ -434,7 +432,7 @@ function loadOptions() {
 }
 
 function saveOptions() {
-	var editor = mActivity.getSharedPreferences("JSMOD", 0).edit();
+	var editor = getActivity().getSharedPreferences("JSMOD", 0).edit();
 
 	mOptions[1] = [JSNAMES,JSCODES];
 
@@ -465,9 +463,9 @@ function showUpdate() {
 	mActivity.runOnUiThread(
 		function() {
 			var clazz = getClasse("agd");
-			var painel = clazz.getConstructor(android.content.Context).newInstance(mActivity);
+			var painel = clazz.getConstructor(android.content.Context).newInstance(getActivity());
 			painel.setTitle(getLangString("JSUP"));
-			var content = Utils.readFile(FDIR.getAbsolutePath() + "/script/UCMOD.txt");
+			var content = Utils.readFile(getActivity().getFilesDir().getAbsolutePath() + "/script/UCMOD.txt");
 			if (content == null)
 				return;
 			var s = content.split("\\|");

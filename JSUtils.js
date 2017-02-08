@@ -18,6 +18,13 @@ function stringToBase(s) {
 	}
 }
 
+function getActivity(){
+	var mActivity = getMainContext(pInt(0));
+	if(mActivity instanceof android.app.Activity)
+		return mActivity;
+	return com.uc.browser.ActivityBrowser.a();
+}
+
 function getDraw(name) {
 	try
 	{
@@ -41,7 +48,7 @@ function new_option_button(id, name) {
 }
 
 function getClasse(name) {
-	return Class.forName(name, false, mActivity.getClass().getClassLoader());
+	return Class.forName(name, false, getActivity().getClass().getClassLoader());
 }
 
 function isURL(url) {
@@ -67,7 +74,7 @@ function JavaArrayToJsArray(javaArray) {
 }
 
 function dpToPx(dp) {
-	var px = android.util.TypedValue.applyDimension(android.util.TypedValue.COMPLEX_UNIT_DIP, dp, mActivity.getResources().getDisplayMetrics());
+	var px = android.util.TypedValue.applyDimension(android.util.TypedValue.COMPLEX_UNIT_DIP, dp, getActivity().getResources().getDisplayMetrics());
 	return px;
 }
 
