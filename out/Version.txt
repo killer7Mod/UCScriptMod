@@ -1,4 +1,4 @@
-Version: 0.00071
+Version: 0.00075
 
 Changes:
 *Generator Play Store(Updated 03/01/2017)
@@ -13,9 +13,10 @@ Changes:
 *Javascript Skip Protector DDoS CloudFlare
 *Generator Upfile
 *Added Custom Proxy in JS MOD (Enable in Menu Extra)
-*Fix Build 4Fix1
+*Added Proxy WebProxy
+*Removed proxy MuchProxy
 |
-Versão: 0.00071
+Versão: 0.00075
 
 Mudanças:
 *Gerador de Download da Play Store(Atualizado 03/01/2017)
@@ -30,4 +31,5 @@ Mudanças:
 *Javascript Pula Proteção DDoS do CloudFlare
 *Gerador do Upfile
 *Adicionado Custom Proxy no JS MOD (Ative no Menu Extra)
-*Correção nos IDs para Build4Fix1
+*Adicionado proxy WebProxy
+*Removido proxy Muchproxy
