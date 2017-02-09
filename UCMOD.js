@@ -134,7 +134,7 @@ function hook_updated() {
 			f.setAccessible(true);
 			if (f.get(m) != null)
 			{
-				f.set(m, new com.uc.browser.cm(mActivity));
+				f.set(m, new com.uc.browser.cm(getActivity()));
 			}
 		});
 }
@@ -358,7 +358,7 @@ function showJSMOD() {
 
 
 function showJSInjector() {
-	mActivity.runOnUiThread(
+	getActivity().runOnUiThread(
 		function() {
 			var clazz = getClasse("agd");
 			GUIPainel = clazz.getConstructor(android.content.Context).newInstance(getActivity());
@@ -460,7 +460,7 @@ function saveOptions() {
 }
 
 function showUpdate() {
-	mActivity.runOnUiThread(
+	getActivity().runOnUiThread(
 		function() {
 			var clazz = getClasse("agd");
 			var painel = clazz.getConstructor(android.content.Context).newInstance(getActivity());

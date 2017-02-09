@@ -1,4 +1,4 @@
-Version: 0.00075
+Version: 0.00076
 
 Changes:
 *Generator Play Store(Updated 03/01/2017)
@@ -16,7 +16,7 @@ Changes:
 *Added Proxy WebProxy
 *Removed proxy MuchProxy
 |
-Versão: 0.00075
+Versão: 0.00076
 
 Mudanças:
 *Gerador de Download da Play Store(Atualizado 03/01/2017)
