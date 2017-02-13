@@ -43,7 +43,7 @@ function getProxyLayout() {
 	arr[0] = new TextView(getActivity());
 	arr[0].setText("Select Proxy");
 	arr[1] = new Spinner(getActivity());
-	var options = ["WEBPROXY"];
+	var options = ["MUCHPROXY[USA]","MULTIWEBPROXY","BUKA.LINK"];
 	arr[1].setAdapter(new ArrayAdapter(getActivity(), 17367050, JsArrayToJavaArray(java.lang.String, options)));
 	arr[1].setOnItemSelectedListener(
 		{
@@ -53,7 +53,7 @@ function getProxyLayout() {
 			onNothingSelected:function(view) {}
 		});
 
-	if (mOptions != null && mOptions.length > 1)
+	if (mOptions != null && options.length > mOptions[2])
 		arr[1].setSelection(mOptions[2]);
 	return arr;
 }
