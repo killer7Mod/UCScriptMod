@@ -462,9 +462,9 @@ function saveOptions() {
 		}
 		editor.putString("JSNAMES", tmp.toString());
 		editor.putString("JSCODES", tmp2.toString());
-		editor.putInt("JSPROXY", mOptions[2]);
-		editor.commit();
 	}
+	editor.putInt("JSPROXY", mOptions[2]);
+	editor.commit();
 }
 
 function showUpdate() {
