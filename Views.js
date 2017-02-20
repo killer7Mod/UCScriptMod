@@ -43,7 +43,7 @@ function getProxyLayout() {
 	arr[0] = new TextView(getActivity());
 	arr[0].setText("Select Proxy");
 	arr[1] = new Spinner(getActivity());
-	var options = ["MUCHPROXY[USA]","MULTIWEBPROXY","BUKA.LINK"];
+	var options = ["MUCHPROXY[USA]","MUCHPROXY[HIDE]","MULTIWEBPROXY","BUKA.LINK"];
 	arr[1].setAdapter(new ArrayAdapter(getActivity(), 17367050, JsArrayToJavaArray(java.lang.String, options)));
 	arr[1].setOnItemSelectedListener(
 		{

@@ -155,10 +155,14 @@ function hook_proxy(param) {
 		param[1] = "http://us.muchproxy.com/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
 		break;
 		case 1:
+		param[0] = "http://hide.muchproxy.com/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
+		param[1] = "http://hide.muchproxy.com/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
+		break;
+		case 2:
 		param[0] = "http://multiwebproxy.com/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
 		param[1] = "http://multiwebproxy.com/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
 		break;
-		case 2:
+		case 3:
 		param[0] = "http://buka.link/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
 		param[1] = "http://buka.link/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
 		break;
