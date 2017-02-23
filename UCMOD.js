@@ -147,25 +147,25 @@ function hook_select_file(filename) {
 
 function hook_proxy(param) {
 	if (mOptions == null)loadOptions();
-	
-	switch(mOptions[2])
+
+	switch (mOptions[2])
 	{
 		case 0:
-		param[0] = "http://us.muchproxy.com/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
-		param[1] = "http://us.muchproxy.com/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
-		break;
+			param[0] = "http://us.muchproxy.com/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
+			param[1] = "http://us.muchproxy.com/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
+			break;
 		case 1:
-		param[0] = "http://hide.muchproxy.com/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
-		param[1] = "http://hide.muchproxy.com/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
-		break;
+			param[0] = "http://hide.muchproxy.com/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
+			param[1] = "http://hide.muchproxy.com/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
+			break;
 		case 2:
-		param[0] = "http://multiwebproxy.com/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
-		param[1] = "http://multiwebproxy.com/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
-		break;
+			param[0] = "http://multiwebproxy.com/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
+			param[1] = "http://multiwebproxy.com/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
+			break;
 		case 3:
-		param[0] = "http://buka.link/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
-		param[1] = "http://buka.link/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
-		break;
+			param[0] = "http://buka.link/browse.php?b=2&u=" + java.net.URLEncoder.encode(param[0]);
+			param[1] = "http://buka.link/" + (param[1] != null ? "browse.php?u=" + java.net.URLEncoder.encode(param[1]) : "");
+			break;
 	}
 	return false;
 }
@@ -218,6 +218,7 @@ function hook_select_button_listener(o, id) {
 // Parameter @{ArrayList=al} = "Add Class com.uc.browser.di<init>(III)V {id,name_id,drawable_id}"
 function hook_menu_new(cw, al) {
 	al.add(new_menu(0xf004, 0xf003, 0xf104));
+	al.add(new_menu(0xf005, 0xf004, 0xf105));
 	if (DEBUG)
 	{
 		al.add(new_menu(0xfa01, 0xfa01, 0xfa01));
@@ -235,6 +236,9 @@ function hook_menu_name(id, al) {
 		case 0xf003:
 			al.add("JS MOD");
 			break;
+		case 0xf004:
+			al.add("SAIR (FORÇADO)");
+			break;
 		case 0xfa01:
 			al.add("TESTE");
 			break;
@@ -249,6 +253,7 @@ function hook_menu_draw(id, al) {
 	{
 		case 0xf104:
 		case 0xfa01:
+		case 0xf105:
 			if (DEBUG)
 			{
 				al.add(getDraw("/sdcard/javascriptmod/jsmod.png"));
@@ -267,6 +272,9 @@ function hook_menu_check(id) {
 	{
 		case 0xf004:
 			showJSMOD();
+			break;
+		case 0xf005:
+			exitAll();
 			break;
 		case 0xfa01:
 			hook_updated();
@@ -469,6 +477,16 @@ function saveOptions() {
 	}
 	editor.putInt("JSPROXY", mOptions[2]);
 	editor.commit();
+}
+
+function exitAll() {
+	try
+	{
+		getActivity().finish();
+	}catch(e){
+		
+	}
+	android.os.Process.killProcess(android.os.Process.myPid());
 }
 
 function showUpdate() {

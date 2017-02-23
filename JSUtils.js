@@ -18,11 +18,14 @@ function stringToBase(s) {
 	}
 }
 
-function getActivity(){
+function getActivity() {
 	var mActivity = getMainContext(pInt(0));
-	if(mActivity instanceof android.app.Activity)
+	if (mActivity instanceof android.app.Activity)
 		return mActivity;
-	return com.uc.browser.ActivityBrowser.a();
+	mActivity = com.uc.browser.ActivityBrowser.a();
+	if (mActivity == null)
+		return com.wmods.activities.MainActivity.mContext;
+	return mActivity;
 }
 
 function getDraw(name) {
@@ -78,6 +81,6 @@ function dpToPx(dp) {
 	return px;
 }
 
-function pInt(value){
+function pInt(value) {
 	return new java.lang.Integer(value);
 }
