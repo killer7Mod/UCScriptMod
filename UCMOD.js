@@ -218,7 +218,7 @@ function hook_select_button_listener(o, id) {
 // Parameter @{ArrayList=al} = "Add Class com.uc.browser.di<init>(III)V {id,name_id,drawable_id}"
 function hook_menu_new(cw, al) {
 	al.add(new_menu(0xf004, 0xf003, 0xf104));
-	al.add(new_menu(0xf005, 0xf004, 0xf105));
+	al.add(new_menu(0xf005, 0xf004, 0x2819));
 	if (DEBUG)
 	{
 		al.add(new_menu(0xfa01, 0xfa01, 0xfa01));
@@ -253,8 +253,7 @@ function hook_menu_draw(id, al) {
 	{
 		case 0xf104:
 		case 0xfa01:
-		case 0xf105:
-			if (DEBUG)
+			if (!DEBUG)
 			{
 				al.add(getDraw("/sdcard/javascriptmod/jsmod.png"));
 				break;
@@ -415,7 +414,7 @@ function setViews(layout, position) {
 }
 
 function loadOptions() {
-	var prefs = getActivity().getSharedPreferences("JSMOD", 1);
+	var prefs = Utils.getContext().getSharedPreferences("JSMOD", 1);
 	mOptions = [];
 
 	// Load Generators
@@ -452,7 +451,7 @@ function loadOptions() {
 }
 
 function saveOptions() {
-	var editor = getActivity().getSharedPreferences("JSMOD", 0).edit();
+	var editor = Utils.getContext().getSharedPreferences("JSMOD", 0).edit();
 
 	mOptions[1] = [JSNAMES,JSCODES];
 
