@@ -1,4 +1,4 @@
-Version: 0.00078
+Version: 0.00079
 
 Changes:
 *Generator Play Store(Updated 03/01/2017)
@@ -14,8 +14,9 @@ Changes:
 *Generator Upfile
 *Added Custom Proxy in JS MOD (Enable in Menu Extra)
 *Added Proxy WebProxy,Muchproxy[USA,HIDE],Buka
+*Added Button Exit(Force), No use in Downloadings
 |
-Versão: 0.00078
+Versão: 0.00079
 
 Mudanças:
 *Gerador de Download da Play Store(Atualizado 03/01/2017)
@@ -31,3 +32,4 @@ Mudanças:
 *Gerador do Upfile
 *Adicionado Custom Proxy no JS MOD (Ative no Menu Extra)
 *Adicionado proxy WebProxy,MuchProxy[USA,HIDE],Buka
+*Adicionado Botão de Sair(Forçado). Não use se estiver fazendo downloads
