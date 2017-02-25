@@ -21,7 +21,7 @@ function loadLang(){
 	NAME:"Nome",
 	CODE:"Codigo",
 	ADDED:"Adicionado script",
-	SCRIPT_E:"Script já Existe"
+	EXIT_ALL:"SAIR (FORÇADO)"
 	};
 	else
 	mLang = {
@@ -41,7 +41,7 @@ function loadLang(){
 	NAME:"Name",
 	CODE:"Code",
 	ADDED:"Added script",
-	SCRIPT_E:"Script already exists"
+	EXIT_ALL:"EXIT (FORCE)"
 	};
 }
 

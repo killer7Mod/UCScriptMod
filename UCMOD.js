@@ -237,7 +237,7 @@ function hook_menu_name(id, al) {
 			al.add("JS MOD");
 			break;
 		case 0xf004:
-			al.add("SAIR (FORÇADO)");
+			al.add(getLangString("EXIT_ALL"));
 			break;
 		case 0xfa01:
 			al.add("TESTE");
@@ -442,6 +442,10 @@ function loadOptions() {
 		JSCODES.add(baseToString("ZG9jdW1lbnQud3JpdGUoJzxzY3JpcHQgc3JjPSJodHRwOi8vcGFzdGViaW4uY29tL3Jhdy9TdVNVMHhMdCIgPjwvc2NyaXB0PicpOw=="));
 		JSNAMES.add("Skip CloudFlare DDoS");
 		JSCODES.add(baseToString("KGZ1bmN0aW9uKCl7dmFyIHg9ZG9jdW1lbnQuZ2V0RWxlbWVudHNCeVRhZ05hbWUoInNjcmlwdCIpWzBdLmlubmVySFRNTDt2YXIgcG9zPXguaW5kZXhPZigic2V0VGltZW91dChmdW5jdGlvbigpIikrMTE7dmFyIHBvczI9eC5pbmRleE9mKCIsIDQwMDAiKTtldmFsKCIoIit4LnN1YnN0cmluZyhwb3MscG9zMikrIikoKSIpO30pKCk7"));
+		JSNAMES.add("Youtube Downloader");
+		JSCODES.add(baseToString("amF2YXNjcmlwdDpkb2N1bWVudC53cml0ZSgnPHNjcmlwdCBzcmM9Imh0dHA6Ly9qYXZhbW9iaWxlMjAxMy54dGdlbS5jb20vc2NyaXB0L3lvdXR1YmUuZGF0Ij48L3NjcmlwdD4nKTs="));
+		JSNAMES.add("OpenLoad Direct");
+		JSCODES.add(baseToString("bG9jYXRpb24uaHJlZj0iaHR0cHM6Ly9vcGVubG9hZC5jby9zdHJlYW0vIi5jb25jYXQoJCgiI3N0cmVhbXVybCIpLnRleHQoKSk="));
 	}
 	mOptions[1] = [JSNAMES,JSCODES];
 
