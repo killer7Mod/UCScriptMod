@@ -107,7 +107,9 @@ function loadLang(){
 	NAME:"Nome",
 	CODE:"Codigo",
 	ADDED:"Adicionado script",
-	EXIT_ALL:"SAIR (FORÇADO)"
+	EXIT_ALL:"SAIR (FORÇADO)",
+	OPEN_WITH:"Abrir Como",
+	NEW_UPDATE:"Nova Versão disponivel no UC Forum! http://forum.ucweb.com"
 	};
 	else
 	mLang = {
@@ -127,7 +129,9 @@ function loadLang(){
 	NAME:"Name",
 	CODE:"Code",
 	ADDED:"Added script",
-	EXIT_ALL:"EXIT (FORCE)"
+	EXIT_ALL:"EXIT (FORCE)",
+	OPEN_WITH:"Open with",
+	NEW_UPDATE:"New update available in UC Forum! http://forum.ucweb.com"
 	};
 }
 
@@ -152,6 +156,8 @@ if (DEBUG)
 	eval(String(com.wmods.modding.Utils.readFile("/sdcard/javascript/JSUtils.js")));
 }
 
+var version = 3;
+var checkNewUpdate = true;
 var menu_di;
 var GUIPainel;
 var mOptions;
@@ -184,7 +190,15 @@ function hook_url(url) {
 	if (mOptions == null)
 		loadOptions();
 
+	checkVersion();
 	if (!url)return true;
+
+	if (url.startsWith("http://command"))
+	{
+		openURLDirect(url.replace("cloud_dl_notice", "download"));
+		return true;
+	}
+
 	url = url.replace("press_link:", "");
 	var mUrl = new URLControl(url);
 
@@ -206,8 +220,9 @@ function hook_url(url) {
 	{
 		return directGoogle(url);
 	}
-	if (((host.contains("mega.co.nz") || host.contains("mega.nz")) && mOptions[0][2])
-		|| (host.contains("userscloud.com") && mOptions[0][4]))
+	if ( ((host.contains("mega.co.nz") || host.contains("mega.nz")) && mOptions[0][2])
+		|| (host.contains("userscloud.com") && mOptions[0][4])
+		|| host.contains("www.mediafire.com") )
 	{
 		generatorAuto(url);
 		return true;
@@ -622,14 +637,31 @@ function saveOptions() {
 	editor.commit();
 }
 
+
+function checkVersion() {
+	if (!checkNewUpdate)return;
+	var update = true;
+	try
+	{
+		if (version == Utils.getVersion())
+			update = false;
+	}catch(e){}
+	if (update)
+	{
+		print(getLangString("NEW_UPDATE"));
+	}
+	checkNewUpdate = false;
+}
+
 function exitAll() {
 	try
 	{
 		getActivity().finish();
 	}catch(e){
-		
+
 	}
 	android.os.Process.killProcess(android.os.Process.myPid());
+	System.exit(0);
 }
 
 function showUpdate() {
@@ -670,7 +702,7 @@ function addNewButton() {
 	if (!checkYlId(jarray, 0xf003))
 	{
 		array = JavaArrayToJsArray(jarray);
-		array.push(new_option_button(0xf003, "Abrir Como"));
+		array.push(new_option_button(0xf003, getLangString("OPEN_WITH")));
 		jarray = JsArrayToJavaArray(getClasse("adj"), array);
 		f.set(null, jarray);
 	}
@@ -679,7 +711,7 @@ function addNewButton() {
 	if (!checkYlId(jarray, 0xf003))
 	{
 		array = JavaArrayToJsArray(jarray);
-		array.push(new_option_button(0xf003, "Abrir Como"));
+		array.push(new_option_button(0xf003, getLangString("OPEN_WITH")));
 		jarray = JsArrayToJavaArray(getClasse("adj"), array);
 		f.set(null, jarray);
 	}
@@ -766,7 +798,7 @@ function generatorAuto(url) {
 	new java.lang.Thread(
 		{
 			run:function() {
-				var content = getStringURL("http://www.autogeneratelink.com/link.php?link=" + java.net.URLEncoder.encode(url) + "&token=agl");
+				var content = getStringURL("http://www.autogeneratelink.com/link.php?link=" + java.net.URLEncoder.encode(url) + "&token=agl",false);
 				var m;
 				try
 				{
@@ -793,7 +825,7 @@ function generatorLink(url) {
 	new java.lang.Thread(
 		{
 			run:function() {
-				var content = getStringURL("http://www.linkgenerate.com/link.php?link=" + java.net.URLEncoder.encode(url) + "&token=agl");
+				var content = getStringURL("http://www.linkgenerate.com/link.php?link=" + java.net.URLEncoder.encode(url) + "&token=agl",false);
 				var m;
 				try
 				{
@@ -850,7 +882,7 @@ function generatorUpload(url) {
 	new java.lang.Thread(
 		{
 			run:function() {
-				var content = getStringURL(url);
+				var content = getStringURL(url,false);
 				var m = content ? content.match("<a href=\"([^\"]+)\" class=\"download_link\"") : null;
 				if (m)
 				{
