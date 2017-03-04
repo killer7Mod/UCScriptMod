@@ -1,9 +1,10 @@
-Version: 0.00080
+Version: 0.00090
 
 Changes:
 *Generator Play Store(Updated 03/01/2017)
 *Direct Download of Google Drive
 *Generator Mega
+*Generator Mediafire
 *View Source Page
 *Generator 4Shared(OFF)
 *Generator userscloud
@@ -14,7 +15,7 @@ Changes:
 *Added Proxy WebProxy,Muchproxy[USA,HIDE],Buka
 *Added Button Exit(Force), No use in Downloadings
 |
-Versão: 0.00080
+Versão: 0.00090
 
 Mudanças:
 *Gerador de Download da Play Store(Atualizado 03/01/2017)
@@ -23,6 +24,7 @@ Mudanças:
 *Ver Código fonte da página
 *Gerador do 4Shared(OFF)
 *Gerador do Userscloud
+*Gerador do Mediafire
 *Gerador do dailyuploads(Atualizado 03/01/2017)
 *Javascript Injetor [Proxy TurboHide, Pula Proteção DDoS do CloudFlare, Youtube Downloader, Openload Direto]
 *Gerador do Upfile
