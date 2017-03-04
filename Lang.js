@@ -21,7 +21,9 @@ function loadLang(){
 	NAME:"Nome",
 	CODE:"Codigo",
 	ADDED:"Adicionado script",
-	EXIT_ALL:"SAIR (FORÇADO)"
+	EXIT_ALL:"SAIR (FORÇADO)",
+	OPEN_WITH:"Abrir Como",
+	NEW_UPDATE:"Nova Versão disponivel no UC Forum! http://forum.ucweb.com"
 	};
 	else
 	mLang = {
@@ -41,7 +43,9 @@ function loadLang(){
 	NAME:"Name",
 	CODE:"Code",
 	ADDED:"Added script",
-	EXIT_ALL:"EXIT (FORCE)"
+	EXIT_ALL:"EXIT (FORCE)",
+	OPEN_WITH:"Open with",
+	NEW_UPDATE:"New update available in UC Forum! http://forum.ucweb.com"
 	};
 }
 
