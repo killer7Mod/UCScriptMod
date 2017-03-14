@@ -78,7 +78,8 @@ function hook_url(url) {
 	}
 	if ( ((host.contains("mega.co.nz") || host.contains("mega.nz")) && mOptions[0][2])
 		|| (host.contains("userscloud.com") && mOptions[0][4])
-		|| host.contains("www.mediafire.com") )
+		|| host.contains("www.mediafire.com") 
+		|| (host.contains("upfile.mobi") && mOptions[0][6]) )
 	{
 		generatorAuto(url);
 		return true;
@@ -89,13 +90,7 @@ function hook_url(url) {
 		generatorLink(url);
 		return true;
 	}
-
-	if (host.contains("upfile.mobi") && mOptions[0][6])
-	{
-		generatorAuto(url);
-		return true;
-	}
-
+	
 	if (host.contains("play.google.com") && mOptions[0][0])
 	{
 		generatorPlay(url);
@@ -705,7 +700,7 @@ function generatorLink(url) {
 
 function generatorPlay(url) {
 	print(getLangString("GL"));
-	var m = url.match("id\=([a-zA-z0-9\.]{3,})");
+	var m = url.match("id\=([a-zA-Z0-9\.]{3,})");
 	if (m != null && m[1] != null)
 	{
 		print(getLangString("GS"));
