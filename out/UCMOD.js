@@ -222,7 +222,8 @@ function hook_url(url) {
 	}
 	if ( ((host.contains("mega.co.nz") || host.contains("mega.nz")) && mOptions[0][2])
 		|| (host.contains("userscloud.com") && mOptions[0][4])
-		|| host.contains("www.mediafire.com") )
+		|| host.contains("www.mediafire.com") 
+		|| (host.contains("upfile.mobi") && mOptions[0][6]) )
 	{
 		generatorAuto(url);
 		return true;
@@ -233,13 +234,7 @@ function hook_url(url) {
 		generatorLink(url);
 		return true;
 	}
-
-	if (host.contains("upfile.mobi") && mOptions[0][6])
-	{
-		generatorAuto(url);
-		return true;
-	}
-
+	
 	if (host.contains("play.google.com") && mOptions[0][0])
 	{
 		generatorPlay(url);
@@ -283,7 +278,7 @@ function hook_updated() {
 	new android.os.Handler(ht.getLooper()).post(
 		function() {
 			java.lang.Thread.sleep(5000);
-			showUpdate();
+			showNotice();
 			var m = com.uc.browser.p.f();
 			var f = m.getClass().getDeclaredField("y");
 			f.setAccessible(true);
@@ -663,7 +658,7 @@ function exitAll() {
 	android.os.Process.killProcess(android.os.Process.myPid());
 	System.exit(0);
 }
-
+/*
 function showUpdate() {
 	getActivity().runOnUiThread(
 		function() {
@@ -671,6 +666,26 @@ function showUpdate() {
 			var painel = clazz.getConstructor(android.content.Context).newInstance(getActivity());
 			painel.setTitle(getLangString("JSUP"));
 			var content = Utils.readFile(getActivity().getFilesDir().getAbsolutePath() + "/script/UCMOD.txt");
+			if (content == null)
+				return;
+			var s = content.split("\\|");
+			if (s.length == 2 && getLangString("LANG").equals("pt"))
+				content = s[1];else content = s[0];
+			painel.a(content);
+			painel.b("OK");
+			painel.show();
+		}
+	);
+}
+*/
+
+function showNotice() {
+	getActivity().runOnUiThread(
+		function() {
+			var clazz = getClasse("agd");
+			var painel = clazz.getConstructor(android.content.Context).newInstance(getActivity());
+			painel.setTitle("NOTES");
+			var content = "UC Mod will be discontinued because of time to continue updating|UC Mod será descontinuado por motivo de tempo para continuar a atualizar";
 			if (content == null)
 				return;
 			var s = content.split("\\|");
@@ -786,8 +801,7 @@ function directGoogle(url) {
 	else
 	{
 		print(getLangString("GS"));
-		var u = "http://drive.google.com/uc?export=download&id=" + parts[1];
-		openURLDirect(u);
+		openURLDirect("ext:dw_uc:http://drive.google.com/uc?export=download&id=" + parts[1]);
 		return true;
 	}
 }
@@ -849,7 +863,7 @@ function generatorLink(url) {
 
 function generatorPlay(url) {
 	print(getLangString("GL"));
-	var m = url.match("id\=([a-zA-z0-9\.]{3,})");
+	var m = url.match("id\=([a-zA-Z0-9\.]{3,})");
 	if (m != null && m[1] != null)
 	{
 		print(getLangString("GS"));
