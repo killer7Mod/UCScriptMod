@@ -180,6 +180,7 @@ var TextUtils = Packages.android.text.TextUtils;
 var LinearLayout = Packages.android.widget.LinearLayout;
 var Spinner = Packages.android.widget.Spinner;
 var ArrayAdapter = Packages.android.widget.ArrayAdapter;
+var View = Packages.android.view.View;
 var ListView = Packages.android.widget.ListView;
 var TextView = Packages.android.widget.TextView;
 var CheckBox = Packages.android.widget.CheckBox;
@@ -375,7 +376,6 @@ function hook_menu_new(cw, al) {
 	{
 		al.add(new_menu(0xfa01, 0xfa01, 0xfa01));
 	}
-
 }
 
 
@@ -405,11 +405,6 @@ function hook_menu_draw(id, al) {
 	{
 		case 0xf104:
 		case 0xfa01:
-			if (!DEBUG)
-			{
-				al.add(getDraw("/sdcard/javascriptmod/jsmod.png"));
-				break;
-			}
 			al.add(getDraw(getActivity().getFilesDir().getAbsolutePath() + "/script/jsmod.png"));
 			break;
 
@@ -475,9 +470,12 @@ function showJSMOD() {
 			GUIPainel = clazz.getConstructor(android.content.Context).newInstance(getActivity());
 			GUIPainel.setTitle("JSMOD");
 			var layout = new LinearLayout(getActivity());
-			layout.setBackgroundColor(0xffffff);
+			layout.setBackgroundColor(android.graphics.Color.rgb(0,0,0));
 			layout.setOrientation(1);
-
+			var view2 = new View(getActivity());
+			view2.setBackgroundColor(android.graphics.Color.rgb(0xff,0xff,0xff));
+			view2.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT,dpToPx(1)));
+			
 			var names = [];
 			for (var i=0;i < GUIOptions.length;i++)
 				if (DEBUG || GUIOptions[i].debug == false)
@@ -488,7 +486,7 @@ function showJSMOD() {
 			spinner.setLayoutParams(lp);
 			var adapter = new ArrayAdapter(getActivity(), 17367050, JsArrayToJavaArray(java.lang.String, names));
 			spinner.setAdapter(adapter);
-			spinner.setBackgroundColor(android.graphics.Color.rgb(0, 00, 0x3f));
+		    //spinner.setBackgroundColor(android.graphics.Color.rgb(0, 0xaa, 0));
 			scroll = new android.widget.ScrollView(getActivity());
 			scroll.setScrollbarFadingEnabled(false);
 			layoutOptions = new LinearLayout(getActivity());
@@ -504,6 +502,7 @@ function showJSMOD() {
 					}
 				});
 			layout.addView(spinner);
+			layout.addView(view2);
 			scroll.addView(layoutOptions);
 			layout.addView(scroll);
 			GUIPainel.a(layout);
@@ -599,7 +598,7 @@ function loadOptions() {
 		JSCODES.add(baseToString("amF2YXNjcmlwdDpkb2N1bWVudC53cml0ZSgnPHNjcmlwdCBzcmM9Imh0dHA6Ly9qYXZhbW9iaWxlMjAxMy54dGdlbS5jb20vc2NyaXB0L3lvdXR1YmUuZGF0Ij48L3NjcmlwdD4nKTs="));
 		JSNAMES.add("OpenLoad Direct");
 		JSCODES.add(baseToString("bG9jYXRpb24uaHJlZj0iaHR0cHM6Ly9vcGVubG9hZC5jby9zdHJlYW0vIi5jb25jYXQoJCgiI3N0cmVhbXVybCIpLnRleHQoKSk="));
-		JSNAMES.add("Skip linkshrink");
+		JSNAMES.add("Skip LinkShrink");
 		JSCODES.add(baseToString("JCgiI3NraXAiKS5zaG93KCk="));
 	}
 	mOptions[1] = [JSNAMES,JSCODES];
