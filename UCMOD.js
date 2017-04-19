@@ -45,7 +45,7 @@ var Action = Packages.com.wmods.activities.Action;
 // url clicked
 // Parameter @{String=url} = "Url Clicked"
 
-function hook_url2(url) {
+function hook_url(url) {
 	if (mOptions == null)
 		loadOptions();
 
@@ -79,10 +79,10 @@ function hook_url2(url) {
 	{
 		return directGoogle(url);
 	}
-	if ( ((host.contains("mega.co.nz") || host.contains("mega.nz")) && mOptions[0][2])
+	if (((host.contains("mega.co.nz") || host.contains("mega.nz")) && mOptions[0][2])
 		|| (host.contains("userscloud.com") && mOptions[0][4])
 		|| host.contains("www.mediafire.com") 
-		|| (host.contains("upfile.mobi") && mOptions[0][6]) )
+		|| (host.contains("upfile.mobi") && mOptions[0][6]))
 	{
 		generatorAuto(url);
 		return true;
@@ -93,7 +93,7 @@ function hook_url2(url) {
 		generatorLink(url);
 		return true;
 	}
-	
+
 	if (host.contains("play.google.com") && mOptions[0][0])
 	{
 		generatorPlay(url);
@@ -137,7 +137,7 @@ function hook_updated() {
 	new android.os.Handler(ht.getLooper()).post(
 		function() {
 			java.lang.Thread.sleep(5000);
-			showNotice();
+			showUpdate();
 			var m = com.uc.browser.p.f();
 			var f = m.getClass().getDeclaredField("y");
 			f.setAccessible(true);
@@ -154,7 +154,7 @@ function hook_select_file(filename) {
 
 }
 
-function hook_proxy2(param) {
+function hook_proxy(param) {
 	if (mOptions == null)loadOptions();
 
 	switch (mOptions[2])
@@ -181,10 +181,10 @@ function hook_proxy2(param) {
 
 // Show Page
 // Parameter @{Object=o} = "Class com.uc.browser.o"
-//function hook_page(o) {
-	//if (!mOptions)loadOptions();
-	//addNewButton();
-//}
+function hook_page(o) {
+	if (!mOptions)loadOptions();
+	addNewButton();
+}
 
 // Options on Long Click(Listener)
 // Parameter @{Object=o} = "Class com.uc.browser.o"
@@ -224,7 +224,7 @@ function hook_select_button_listener(o, id) {
 // Menu Options
 // Parameter @{Object=cw} = "Class com.uc.browser.cw"
 // Parameter @{ArrayList=al} = "Add Class com.uc.browser.di<init>(III)V {id,name_id,drawable_id}"
-function hook_menu_new2(cw, al) {
+function hook_menu_new(cw, al) {
 	al.add(new_menu(0xf004, 0xf003, 0xf104));
 	al.add(new_menu(0xf005, 0xf004, 0x2819));
 	if (DEBUG)
@@ -390,6 +390,7 @@ function showJSInjector() {
 			var clazz = getClasse("agd");
 			GUIPainel = clazz.getConstructor(android.content.Context).newInstance(getActivity());
 			GUIPainel.setTitle("JavaScript " + getLangString("CODE"));
+			loadOptions();
 			if (mOptions[1][0].size() == 0)
 			{
 				print(getLangString("NO_SCRIPT"));
@@ -444,7 +445,7 @@ function loadOptions() {
 			JSCODES.add(tmp2.getString(i));
 		}
 	}
-	else
+	if (JSNAMES.size() == 0)
 	{
 		JSNAMES.add("Proxy TurboHide");
 		JSCODES.add(baseToString("ZG9jdW1lbnQud3JpdGUoJzxzY3JpcHQgc3JjPSJodHRwOi8vcGFzdGViaW4uY29tL3Jhdy9TdVNVMHhMdCIgPjwvc2NyaXB0PicpOw=="));
@@ -454,6 +455,8 @@ function loadOptions() {
 		JSCODES.add(baseToString("amF2YXNjcmlwdDpkb2N1bWVudC53cml0ZSgnPHNjcmlwdCBzcmM9Imh0dHA6Ly9qYXZhbW9iaWxlMjAxMy54dGdlbS5jb20vc2NyaXB0L3lvdXR1YmUuZGF0Ij48L3NjcmlwdD4nKTs="));
 		JSNAMES.add("OpenLoad Direct");
 		JSCODES.add(baseToString("bG9jYXRpb24uaHJlZj0iaHR0cHM6Ly9vcGVubG9hZC5jby9zdHJlYW0vIi5jb25jYXQoJCgiI3N0cmVhbXVybCIpLnRleHQoKSk="));
+		JSNAMES.add("Skip linkshrink");
+		JSCODES.add(baseToString("JCgiI3NraXAiKS5zaG93KCk="));
 	}
 	mOptions[1] = [JSNAMES,JSCODES];
 
@@ -516,7 +519,7 @@ function exitAll() {
 	android.os.Process.killProcess(android.os.Process.myPid());
 	System.exit(0);
 }
-/*
+
 function showUpdate() {
 	getActivity().runOnUiThread(
 		function() {
@@ -535,26 +538,26 @@ function showUpdate() {
 		}
 	);
 }
-*/
-
-function showNotice() {
-	getActivity().runOnUiThread(
-		function() {
-			var clazz = getClasse("agd");
-			var painel = clazz.getConstructor(android.content.Context).newInstance(getActivity());
-			painel.setTitle("NOTES");
-			var content = new java.lang.String("UC Mod will be discontinued because of time to continue updating |UC Mod será descontinuado por motivo de tempo para continuar a atualizar");
-			if (content == null)
-				return;
-			var s = content.split("\\|");
-			if (s.length == 2 && getLangString("LANG").equals("pt"))
-				content = s[1];else content = s[0];
-			painel.a(content);
-			painel.b("OK", null);
-			painel.show();
-		}
-	);
-}
+/*
+ function showNotice() {
+ getActivity().runOnUiThread(
+ function() {
+ var clazz = getClasse("agd");
+ var painel = clazz.getConstructor(android.content.Context).newInstance(getActivity());
+ painel.setTitle("NOTES");
+ var content = new java.lang.String("UC Mod will be discontinued because of time to continue updating |UC Mod será descontinuado por motivo de tempo para continuar a atualizar");
+ if (content == null)
+ return;
+ var s = content.split("\\|");
+ if (s.length == 2 && getLangString("LANG").equals("pt"))
+ content = s[1];else content = s[0];
+ painel.a(content);
+ painel.b("OK", null);
+ painel.show();
+ }
+ );
+ }
+ */
 
 function addNewButton() {
 	var f,jarray,array;
@@ -670,7 +673,7 @@ function generatorAuto(url) {
 	new java.lang.Thread(
 		{
 			run:function() {
-				var content = getStringURL("http://www.autogeneratelink.com/link.php?link=" + java.net.URLEncoder.encode(url) + "&token=agl",false);
+				var content = getStringURL("http://www.autogeneratelink.com/link.php?link=" + java.net.URLEncoder.encode(url) + "&token=agl", false);
 				var m;
 				try
 				{
@@ -697,7 +700,7 @@ function generatorLink(url) {
 	new java.lang.Thread(
 		{
 			run:function() {
-				var content = getStringURL("http://www.linkgenerate.com/link.php?link=" + java.net.URLEncoder.encode(url) + "&token=agl",false);
+				var content = getStringURL("http://www.linkgenerate.com/link.php?link=" + java.net.URLEncoder.encode(url) + "&token=agl", false);
 				var m;
 				try
 				{
@@ -754,7 +757,7 @@ function generatorUpload(url) {
 	new java.lang.Thread(
 		{
 			run:function() {
-				var content = getStringURL(url,false);
+				var content = getStringURL(url, false);
 				var m = content ? content.match("<a href=\"([^\"]+)\" class=\"download_link\"") : null;
 				if (m)
 				{
