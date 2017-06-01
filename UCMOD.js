@@ -532,7 +532,7 @@ function showUpdate() {
 			if (s.length == 2 && getLangString("LANG").equals("pt"))
 				content = s[1];else content = s[0];
 			painel.a(content);
-			painel.b("OK");
+			painel.b("OK",null);
 			painel.show();
 		}
 	);

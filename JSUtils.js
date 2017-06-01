@@ -84,3 +84,7 @@ function dpToPx(dp) {
 function pInt(value) {
 	return new java.lang.Integer(value);
 }
+
+function pLong(value) {
+	return new java.lang.Long(value);
+}
