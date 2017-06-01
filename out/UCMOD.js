@@ -84,6 +84,10 @@ function dpToPx(dp) {
 function pInt(value) {
 	return new java.lang.Integer(value);
 }
+
+function pLong(value) {
+	return new java.lang.Long(value);
+}
 var mLang;
 
 function loadLang(){
@@ -676,7 +680,7 @@ function showUpdate() {
 			if (s.length == 2 && getLangString("LANG").equals("pt"))
 				content = s[1];else content = s[0];
 			painel.a(content);
-			painel.b("OK");
+			painel.b("OK",null);
 			painel.show();
 		}
 	);
