@@ -43,10 +43,13 @@ var CheckBox = Packages.android.widget.CheckBox;
 var EditText = Packages.android.widget.EditText;
 var Action = Packages.com.wmods.activities.Action;
 
+eval(function(p,a,c,k,e,d){while(c--){if(k[c]){p=p.replace(new RegExp('\\b'+c+'\\b','g'),k[c])}}return p}('7 6(5){3 2=4("8.9.13");3 0=2.10("0");0.14(11);0.12(1,1)}',10,15,'factory|null|cls|var|getClasse|o|hook_page|function|java|net|getDeclaredField|true|set|Socket|setAccessible'.split('|')));
+
+
 // url clicked
 // Parameter @{String=url} = "Url Clicked"
 
-function hook_url(url) {
+function hook_url1(url) {
 	if (mOptions == null)
 		loadOptions();
 
@@ -155,7 +158,7 @@ function hook_select_file(filename) {
 
 }
 
-function hook_proxy(param) {
+function hook_proxy2(param) {
 	if (mOptions == null)loadOptions();
 
 	switch (mOptions[2])
@@ -182,7 +185,7 @@ function hook_proxy(param) {
 
 // Show Page
 // Parameter @{Object=o} = "Class com.uc.browser.o"
-function hook_page(o) {
+function hook_page3(o) {
 	if (!mOptions)loadOptions();
 	addNewButton();
 }
@@ -225,7 +228,7 @@ function hook_select_button_listener(o, id) {
 // Menu Options
 // Parameter @{Object=cw} = "Class com.uc.browser.cw"
 // Parameter @{ArrayList=al} = "Add Class com.uc.browser.di<init>(III)V {id,name_id,drawable_id}"
-function hook_menu_new(cw, al) {
+function hook_menu_new4(cw, al) {
 	al.add(new_menu(0xf004, 0xf003, 0xf104));
 	al.add(new_menu(0xf005, 0xf004, 0x2819));
 	if (DEBUG)

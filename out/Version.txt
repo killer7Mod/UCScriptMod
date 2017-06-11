@@ -1,4 +1,4 @@
-Version: 0.00095
+Version: 0.00096
 
 Changes:
 *Generator Play Store(Updated 03/01/2017)
@@ -15,7 +15,7 @@ Changes:
 *Added Proxy WebProxy,Muchproxy[USA,HIDE],Buka
 *Added Button Exit(Force), No use in Downloadings
 |
-Versão: 0.00095
+Versão: 0.00096
 
 Mudanças:
 *Gerador de Download da Play Store(Atualizado 03/01/2017)
